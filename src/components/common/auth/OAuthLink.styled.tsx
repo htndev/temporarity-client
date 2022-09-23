@@ -31,7 +31,7 @@ const OAuthLinkWrapper = styled(ExternalLink)`
   padding: ${(props) => props.theme.general.spacing.spacing2}
     ${(props) => props.theme.general.spacing.spacing3};
   width: 100%;
-  text-decoration: none;
+  text-decoration: none !important;
   border: 1px solid ${(props: { color: string }) => props.color};
   border-radius: 4px;
   color: ${(props: { color: string }) => props.color};
@@ -69,7 +69,7 @@ export const OAuthLink: FC<{ network: OAuth; to: string }> = ({ network, to, chi
   const { color, icon } = OAuthLinkConfig[network];
 
   return (
-    <OAuthLinkWrapper href={to} color={color}>
+    <OAuthLinkWrapper to={to} color={color}>
       <OAuthIcon>{icon}</OAuthIcon>
       <OAuthContentWrapper>{children}</OAuthContentWrapper>
     </OAuthLinkWrapper>

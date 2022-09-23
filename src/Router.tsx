@@ -1,8 +1,10 @@
+import { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
-import { NotFound } from './pages/NotFound';
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
+
+const Home = lazy(() => import('./pages/Home'));
+const SignIn = lazy(() => import('./pages/SignIn'));
+const SignUp = lazy(() => import('./pages/SignUp'));
+const NotFound = lazy(() => import('./pages/SignUp'));
 
 export const Router = () => (
   <Routes>

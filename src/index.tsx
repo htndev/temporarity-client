@@ -4,17 +4,21 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { Theme } from './components/common/Theme';
+import { ToastProvider } from './components/common/toastMessage';
 import './i18n';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { store } from './store';
+import './api/auth.api';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
         <Theme>
-          <App />
+          <ToastProvider>
+            <App />
+          </ToastProvider>
         </Theme>
       </BrowserRouter>
     </Provider>

@@ -1,16 +1,19 @@
+import { NetworkError } from './../../common/utils/errors';
 import { createReducer } from '@reduxjs/toolkit';
 import { User } from './../../common/types/user.type';
 import { LOGIN_COMPLETED, LOGIN_FAILED, LOGIN_STARTED } from './../actions/auth';
 
-export interface AuthStateReducer {
+interface AuthStateReducer {
   user: User | null;
   isLoading: boolean;
+  error: null | NetworkError;
 }
 
 export const authReducer = createReducer<AuthStateReducer>(
   {
     user: null,
-    isLoading: false
+    isLoading: false,
+    error: null
   },
   (builder) =>
     builder
@@ -21,7 +24,8 @@ export const authReducer = createReducer<AuthStateReducer>(
         state.isLoading = false;
         state.user = action.payload;
       })
-      .addCase(LOGIN_FAILED, (state) => {
+      .addCase(LOGIN_FAILED, (state, action) => {
         state.isLoading = false;
+        state.error = action.payload;
       })
 );

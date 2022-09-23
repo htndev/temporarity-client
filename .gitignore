@@ -10,6 +10,7 @@
 
 # production
 /build
+public/locales/**
 
 # misc
 .DS_Store
@@ -24,3 +25,7 @@ yarn-error.log*
 
 # Service
 localazy.json
+
+# environment
+.env
+!.env.example

@@ -1,55 +1,58 @@
 import { Box, Button, Menu, MenuItem } from '@mui/material';
-import { useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ReactComponent as UkraineFlag } from '../../../assets/images/ua-flag.svg';
-import { ReactComponent as EnglandFlag } from '../../../assets/images/en-flag.svg';
-import { Locale } from '../../../common/constants/locale.constant';
+import {
+  FALLBACK_LOCALE_I18N_KEY,
+  Locale,
+  LOCALE_FLAG
+} from '../../../common/constants/locale.constant';
+import { useStyleVariables } from '../../../common/utils/hooks/useStyleVariables';
+import { Text } from '../typography/Text';
 
-const FLAG_SIZE = { width: '30px', height: '20px' };
+const Flag: FC<{ locale: string | Locale }> = ({ locale }) => {
+  const { spacing } = useStyleVariables();
+  const flag = LOCALE_FLAG[locale as Locale] || LOCALE_FLAG.DEFAULT;
 
-const LANGUAGE_FLAG = {
-  [Locale.EN]: <EnglandFlag {...FLAG_SIZE} />,
-  [Locale.UK]: <UkraineFlag {...FLAG_SIZE} />
+  return (
+    <Text isFluid sx={{ fontSize: '16px', marginRight: spacing.spacing1 }}>
+      {flag}
+    </Text>
+  );
 };
 
-const options = [
-  'None',
-  'Atria',
-  'Callisto',
-  'Dione',
-  'Ganymede',
-  'Hangouts Call',
-  'Luna',
-  'Oberon',
-  'Phobos',
-  'Pyxis',
-  'Sedna',
-  'Titania',
-  'Triton',
-  'Umbriel'
-];
-
 export const LanguageSwitcher = () => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const [locale, setLocale] = useState<string>(i18n.language);
+
+  const isOpened = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const closeLanguageMenu = () => setAnchorEl(null);
+  const switchLanguage = (language: string) => {
     setAnchorEl(null);
+    i18n.changeLanguage(language);
   };
 
+  useEffect(() => setLocale(i18n.language), [i18n.language]);
+
   return (
-    <Box sx={{ position: 'absolute', top: '1rem', right: '1rem' }}>
-      {LANGUAGE_FLAG.uk}
+    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
       <Button aria-label="more" id="long-button" onClick={handleClick}>
-        Lang
+        <Flag locale={locale} />
+        {t([`i18n.locale.${locale}`, FALLBACK_LOCALE_I18N_KEY])}
       </Button>
-      <Menu id="long-menu" anchorEl={anchorEl} open={open} onClose={handleClose}>
-        {options.map((option) => (
-          <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
-            {option}
+      <Menu id="long-menu" anchorEl={anchorEl} open={isOpened} onClose={closeLanguageMenu}>
+        {i18n.languages.map((language: any) => (
+          <MenuItem
+            key={language}
+            selected={language === locale}
+            onClick={() => switchLanguage(language)}
+          >
+            <Flag locale={language} />
+            {t([`i18n.locale.${language}`, FALLBACK_LOCALE_I18N_KEY])}
           </MenuItem>
         ))}
       </Menu>

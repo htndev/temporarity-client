@@ -21,7 +21,6 @@ export const AuthPageWrapper = ({ children }: { children: ReactChild }) => {
         backgroundImage: `linear-gradient(to bottom right, ${color.white} 50%, ${color.cyan} 50%)`
       }}
     >
-      <LanguageSwitcher />
       {children}
     </Box>
   );
@@ -36,11 +35,14 @@ const Form = styled.form`
   border-radius: 4px;
 `;
 
-export const AuthForm: FC<HTMLAttributes<HTMLFormElement>> = (props) => (
+export const AuthForm: FC<HTMLAttributes<HTMLFormElement>> = ({ children, ...props }) => (
   <>
     <Logo regular />
     <Paper elevation={1}>
-      <Form {...props} />
+      <Form {...props}>
+        <LanguageSwitcher />
+        {children}
+      </Form>
     </Paper>
   </>
 );

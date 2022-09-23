@@ -1,6 +1,5 @@
-import { spacing } from '@mui/system';
-import { ThemeColors, ThemeSpacings, ThemeFont } from './../../types/theme.type';
 import { useTheme as useStyledTheme } from 'styled-components';
+import { ThemeColors, ThemeFont, ThemeSpacings } from './../../types/theme.type';
 
 export const useStyleVariables = () => {
   const {
