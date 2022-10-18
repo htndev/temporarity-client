@@ -1,6 +1,10 @@
-export interface HttpResponse {
+interface Response {
   statusCode: number;
-  message: string;
+  message?: string;
 }
+
+export type HttpResponse<T extends object = {}> = Response & T;
+
+export type NamespaceType<Namespace extends string, T extends string> = `${Namespace}/${T}`;
 
 export type PossibleArray<T> = T | T[];

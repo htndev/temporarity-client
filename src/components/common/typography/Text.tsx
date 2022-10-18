@@ -1,7 +1,7 @@
 import { Typography, TypographyTypeMap } from '@mui/material';
 import { FC } from 'react';
-import { useCorrespondingStyle } from '../../../common/utils/hooks/useCorrespondingStyle';
-import { useStyleVariables } from '../../../common/utils/hooks/useStyleVariables';
+import { useCorrespondingStyle } from '../../../common/hooks/use-corresponding-style';
+import { useStyleVariables } from '../../../common/hooks/use-style-variables';
 
 type Props = { isCentered?: boolean; isFluid?: boolean; sx?: TypographyTypeMap['props']['sx'] };
 

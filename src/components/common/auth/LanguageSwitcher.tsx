@@ -6,7 +6,7 @@ import {
   Locale,
   LOCALE_FLAG
 } from '../../../common/constants/locale.constant';
-import { useStyleVariables } from '../../../common/utils/hooks/useStyleVariables';
+import { useStyleVariables } from '../../../common/hooks/use-style-variables';
 import { Text } from '../typography/Text';
 
 const Flag: FC<{ locale: string | Locale }> = ({ locale }) => {

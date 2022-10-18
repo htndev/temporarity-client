@@ -1,7 +1,7 @@
 import { Box, Paper } from '@mui/material';
 import { FC, HTMLAttributes, ReactChild } from 'react';
 import styled from 'styled-components';
-import { useStyleVariables } from '../../../common/utils/hooks/useStyleVariables';
+import { useStyleVariables } from '../../../common/hooks/use-style-variables';
 import { Logo } from '../Logo';
 import { LanguageSwitcher } from './LanguageSwitcher';
 

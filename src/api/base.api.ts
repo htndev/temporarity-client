@@ -1,7 +1,7 @@
 import { PossibleArray } from '../common/types/common.type';
 import { BASE_URL } from './../common/constants/api.constant';
 import { HttpResponse } from './../common/types/common.type';
-import { NetworkError } from './../common/utils/errors';
+import { NetworkError, ClientError } from './../common/utils/errors';
 
 enum HttpMethod {
   GET = 'get',
@@ -36,6 +36,17 @@ interface FetchBodyOptions extends BaseRequest {
 type QueryType = Omit<BaseRequest, 'method'> & { query?: QueryContent };
 type BodyType = Omit<BaseRequest, 'method'> & { body?: BodyContent };
 
+const getContentTypeMethod = (response: Response): 'json' | 'text' | 'blob' => {
+  const contentType = response.headers.get('Content-Type');
+  switch (true) {
+    case contentType?.includes('application/json'):
+      return 'json';
+    case contentType?.includes('text/html'):
+      return 'text';
+    default:
+      return 'blob';
+  }
+};
 const isQueryRequest = (v: FetchQueryOptions): v is FetchQueryOptions => v.query !== undefined;
 const isBodyRequest = (v: FetchBodyOptions): v is FetchBodyOptions => v.body !== undefined;
 const doesArrayIncludesFiles = (values: any[]): boolean =>
@@ -56,7 +67,8 @@ export class BaseApi {
 
     const opts: RequestInit & { headers: HeadersInit } = {
       method: data.method,
-      headers: data.headers || {}
+      headers: data.headers || {},
+      credentials: 'include'
     };
 
     if (isQueryRequest(data)) {
@@ -69,10 +81,14 @@ export class BaseApi {
     }
 
     const response = await fetch(url, opts);
-    const method = data?.responseType && response[data.responseType] ? data?.responseType : 'json';
+    const method = getContentTypeMethod(response);
     const result: T = await response[method]();
 
     if (result.statusCode >= 400) {
+      throw new ClientError(result);
+    }
+
+    if (result.statusCode >= 500) {
       throw new NetworkError(result);
     }
 

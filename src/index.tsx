@@ -2,14 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import './api/auth.api';
 import App from './App';
+import { AuthContextProvider } from './common/providers/AuthContextProvider';
 import { Theme } from './components/common/Theme';
 import { ToastProvider } from './components/common/toastMessage';
 import './i18n';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { store } from './store';
-import './api/auth.api';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,7 +18,9 @@ ReactDOM.render(
       <BrowserRouter>
         <Theme>
           <ToastProvider>
-            <App />
+            <AuthContextProvider>
+              <App />
+            </AuthContextProvider>
           </ToastProvider>
         </Theme>
       </BrowserRouter>

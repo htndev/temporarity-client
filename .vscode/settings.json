@@ -1,7 +1,10 @@
 {
   "i18n-ally.localesPaths": [
     "src/i18n",
-    "src/i18n/locales"
+    "public/locales"
   ],
-  "i18n-ally.keystyle": "nested"
+  "i18n-ally.keystyle": "nested",
+  "cSpell.words": [
+    "SIGNUP"
+  ]
 }

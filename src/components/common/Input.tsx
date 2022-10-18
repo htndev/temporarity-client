@@ -1,6 +1,6 @@
 import { TextField, TextFieldProps } from '@mui/material';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { useStyleVariables } from '../../common/utils/hooks/useStyleVariables';
+import { useStyleVariables } from '../../common/hooks/use-style-variables';
 import { ValidatorFn } from '../../common/utils/validators';
 
 export const Input: FC<
@@ -42,7 +42,6 @@ export const Input: FC<
     if (isInitialState) {
       setIsInitialState(false);
     }
-    setInput(string);
     onChange(string);
   };
 
@@ -64,11 +63,15 @@ export const Input: FC<
 
     setDisplayLabel(validateResponse);
     setIsValid(false);
-  }, [isInitialState, input, validate]);
+  }, [isInitialState, value, validate]);
 
   useEffect(() => {
     onValidationStateChange?.(isValid);
   }, [isValid, onValidationStateChange]);
+
+  useEffect(() => {
+    setInput(value);
+  }, [value]);
 
   return (
     <TextField

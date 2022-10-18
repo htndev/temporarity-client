@@ -1,5 +1,5 @@
 import { useTheme as useStyledTheme } from 'styled-components';
-import { ThemeColors, ThemeFont, ThemeSpacings } from './../../types/theme.type';
+import { ThemeColors, ThemeFont, ThemeSpacings } from '../types/theme.type';
 
 export const useStyleVariables = () => {
   const {

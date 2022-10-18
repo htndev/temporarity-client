@@ -2,24 +2,26 @@ import { FormEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { BASE_URL } from '../common/constants/api.constant';
+import { useStyleVariables } from '../common/hooks/use-style-variables';
 import { OAuth } from '../common/types/auth.type';
-import { useStyleVariables } from '../common/utils/hooks/useStyleVariables';
+import { connectComponentHoc } from '../common/utils/connect-component-hoc';
 import { isEmptyValidator } from '../common/utils/validators';
 import { AppLink } from '../components/common/AppLink';
 import { AuthForm, AuthPageWrapper } from '../components/common/auth/AuthPage.styled';
 import { OAuthLink } from '../components/common/auth/OAuthLink.styled';
 import { Button } from '../components/common/Button';
 import { Input } from '../components/common/Input';
-import { useToast } from '../components/common/toastMessage';
 import { Heading } from '../components/common/typography/Heading';
 import { Text } from '../components/common/typography/Text';
+import { withAuthGuardAuthorization } from '../components/hoc/AuthGuardAuthorization';
+import { withDisplayErrorMessage } from '../components/hoc/DisplayErrorMessage';
 import { LOGIN } from '../store/actions/auth';
 import { useAppSelector } from '../store/hooks';
+import { isLoadingSelector } from '../store/selectors/auth';
 
 const SignIn = () => {
   const dispatch = useDispatch();
-  const { toast } = useToast();
-  const isLoading = useAppSelector((state) => state.auth.isLoading);
+  const isLoading = useAppSelector(isLoadingSelector);
 
   const { t } = useTranslation();
   const { spacing } = useStyleVariables();
@@ -39,7 +41,6 @@ const SignIn = () => {
     }
 
     dispatch(LOGIN({ email, password }));
-    toast('Hello hui', { type: 'error', isClosable: false });
   };
 
   const getOauthUrl = (service: OAuth): `${typeof BASE_URL}/auth/${OAuth}` =>
@@ -100,4 +101,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default connectComponentHoc(SignIn)(withAuthGuardAuthorization, withDisplayErrorMessage);
