@@ -28,3 +28,5 @@ export const FETCH_USER_FAILED = createAction<string>(`${NAMESPACE}/FETCH_USER_F
 export const SET_TOKENS = createAction<Tokens>(`${NAMESPACE}/SET_TOKENS`);
 
 export const GET_ME = createAction(`${NAMESPACE}/GET_ME`);
+
+export const LOGOUT = createAction(`${NAMESPACE}/LOGOUT`);

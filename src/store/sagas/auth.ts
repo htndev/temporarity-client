@@ -1,6 +1,6 @@
-import { HttpResponse } from './../../common/types/common.type';
 import { call, put, takeEvery } from 'redux-saga/effects';
-import authApi from '../../api/auth.api';
+import { authApi } from '../../api';
+import { User } from '../../common/types/user.type';
 import { NetworkError } from '../../common/utils/errors';
 import { TokensResponse } from './../../common/types/auth.type';
 import {
@@ -15,15 +15,12 @@ import {
   SIGNUP_FAILED,
   SIGNUP_STARTED
 } from './../actions/auth';
-import { callMethodWithAuthorization } from './helpers/call-api';
-import { User } from '../../common/types/user.type';
-import { castType } from './helpers/cast-type';
 
 function* loginWorker({ payload }: ReturnType<typeof LOGIN>) {
   try {
     yield put(LOGIN_STARTED());
 
-    const response: TokensResponse = yield call(authApi.signIn.bind(authApi), payload as any);
+    const response: TokensResponse = yield call(authApi.signIn, payload as any);
 
     yield put(
       LOGIN_COMPLETED({ access: response.tokens.access, refresh: response.tokens.refresh })
@@ -38,7 +35,7 @@ function* signupWorker({ payload }: ReturnType<typeof SIGNUP>) {
   try {
     yield put(SIGNUP_STARTED());
 
-    const response: TokensResponse = yield call(authApi.signUp.bind(authApi), payload as any);
+    const response: TokensResponse = yield call(authApi.signUp, payload as any);
 
     yield put(
       SIGNUP_COMPLETED({ access: response.tokens.access, refresh: response.tokens.refresh })
@@ -51,9 +48,7 @@ function* signupWorker({ payload }: ReturnType<typeof SIGNUP>) {
 
 function* getMe(): Generator {
   try {
-    const response = castType<HttpResponse<{ user: User }>>(
-      yield callMethodWithAuthorization(authApi.getMe.bind(authApi), 'access')
-    );
+    const response = (yield call(authApi.getMe)) as { user: User };
 
     yield put(FETCH_USER_COMPLETED(response.user));
   } catch (e: any) {

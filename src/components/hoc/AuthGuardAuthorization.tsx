@@ -1,7 +1,7 @@
 import { ComponentType, FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import authApi from '../../api/auth.api';
+import { authApi } from '../../api';
 import { SET_TOKENS } from '../../store/actions/auth';
 import { useAppSelector } from '../../store/hooks';
 import { LoadingScreen } from '../common/LoadingScreen';

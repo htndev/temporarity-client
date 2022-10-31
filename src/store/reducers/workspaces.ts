@@ -1,3 +1,4 @@
+import { WorkspaceInDetails } from './../../common/types/workspace.type';
 import {
   FETCH_WORKSPACES_COMPLETED,
   FETCH_WORKSPACES_FAILED,

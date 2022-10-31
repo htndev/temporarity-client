@@ -1,7 +1,7 @@
 import { ComponentType, FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import authApi from '../../api/auth.api';
+import { authApi } from '../../api';
 import { GET_ME, SET_TOKENS } from '../../store/actions/auth';
 import { useAppSelector } from '../../store/hooks';
 import { userSelector } from '../../store/selectors/auth';

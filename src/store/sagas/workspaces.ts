@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest, call } from 'redux-saga/effects';
 import { NetworkError } from '../../common/utils/errors';
 import { workspacesApi } from './../../api/workspaces.api';
 import { HttpResponse } from './../../common/types/common.type';
@@ -13,15 +13,11 @@ import {
   CREATE_WORKSPACE_COMPLETED,
   CREATE_WORKSPACE_FAILED
 } from './../actions/workspaces';
-import { callMethodWithAuthorization } from './helpers/call-api';
-import { castType } from './helpers/cast-type';
 
 function* fetchWorkspaces(): Generator {
   try {
     yield put(FETCH_WORKSPACES_STARTED());
-    const response = castType<HttpResponse<{ workspaces: Workspace[] }>>(
-      yield callMethodWithAuthorization(workspacesApi.getMyWorkspaces.bind(workspacesApi), 'access')
-    );
+    const response: any = yield call(workspacesApi.getMyWorkspaces);
 
     yield put(FETCH_WORKSPACES_COMPLETED(response));
   } catch (e: any) {
@@ -35,11 +31,7 @@ function* createWorkspace({
 }: ReturnType<typeof CREATE_WORKSPACE>): Generator {
   try {
     yield put(CREATE_WORKSPACE_STARTED());
-    yield callMethodWithAuthorization(
-      workspacesApi.createWorkspace.bind(workspacesApi),
-      'access',
-      requestData as any
-    );
+    yield call(workspacesApi.createWorkspace, requestData);
     yield put(CREATE_WORKSPACE_COMPLETED());
     yield put(FETCH_WORKSPACES());
     navigate(`/workspaces/${requestData.slug}`);
@@ -49,7 +41,7 @@ function* createWorkspace({
   }
 }
 
-export function* workspacesWatcher() {
+export function* watchWorkspaces() {
   yield takeLatest(FETCH_WORKSPACES, fetchWorkspaces);
 
   yield takeLatest(CREATE_WORKSPACE, createWorkspace);

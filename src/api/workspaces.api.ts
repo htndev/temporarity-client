@@ -1,5 +1,7 @@
-import { HttpResponse } from './../common/types/common.type';
 import { Workspace } from '../common/types/workspace.type';
+import { HttpResponse } from './../common/types/common.type';
+import { WorkspaceInDetails } from './../common/types/workspace.type';
+import { CREATE_WORKSPACE } from './../store/actions/workspaces';
 import { BaseApi } from './base.api';
 
 class WorkspacesApi extends BaseApi {
@@ -7,21 +9,21 @@ class WorkspacesApi extends BaseApi {
     super('workspaces');
   }
 
-  getMyWorkspaces(
-    args: Parameters<this['get']>[1]
-  ): Promise<HttpResponse<{ workspaces: Workspace[] }>> {
-    return this.get('/', args);
-  }
+  getMyWorkspaces = (): Promise<HttpResponse<{ workspaces: Workspace[] }>> =>
+    this.instance.get('/');
 
-  createWorkspace(args: Parameters<this['get']>[1]): Promise<HttpResponse> {
-    return this.post('/', args);
-  }
+  createWorkspace = (
+    payload: ReturnType<typeof CREATE_WORKSPACE>['payload']['requestData']
+  ): Promise<HttpResponse> => this.instance.post('/', payload);
 
-  hasAccess(
-    slug: string,
-    args: Parameters<this['get']>[1]
-  ): Promise<HttpResponse<{ hasAccess: boolean }>> {
-    return this.get(`/has-access/${slug}`, args);
+  hasAccess = (slug: string): Promise<HttpResponse<{ hasAccess: boolean }>> =>
+    this.instance.get(`/has-access/${slug}`);
+
+  getWorkspace = (slug: string): Promise<HttpResponse<{ workspace: WorkspaceInDetails }>> =>
+    this.instance.get(`/${slug}`);
+
+  inviteUsersToWorkspace(slug: string, emails: string[]): Promise<HttpResponse> {
+    return this.instance.post(`/${slug}/invite-users`, { emails });
   }
 }
 

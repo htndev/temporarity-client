@@ -18,3 +18,7 @@ export interface Workspace {
   slug: string;
   membership: WorkspaceMembership[];
 }
+
+export interface WorkspaceInDetails extends Workspace {
+  apiKey: string;
+}

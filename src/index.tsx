@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import './api/auth.api';
 import App from './App';
 import { AuthContextProvider } from './common/providers/AuthContextProvider';
 import { Theme } from './components/common/Theme';

@@ -21,9 +21,7 @@ export const withHasAccessToWorkspace =
       }
       setIsFetchingWorkspaceAccess(true);
       workspacesApi
-        .hasAccess(slug as string, {
-          headers: { Authorization: `Bearer ${tokens?.access}` }
-        })
+        .hasAccess(String(slug))
         .then(({ hasAccess }) => {
           setShouldRenderNotFound(!hasAccess);
         })
