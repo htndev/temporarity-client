@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { BASE_URL } from '../common/constants/api.constant';
+import { useDocumentTitle } from '../common/hooks/use-document-title';
 import { useStyleVariables } from '../common/hooks/use-style-variables';
 import { OAuth } from '../common/types/auth.type';
 import { connectComponentHoc } from '../common/utils/connect-component-hoc';
@@ -28,6 +29,8 @@ const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [disableLoginButton, setDisableLoginButton] = useState(false);
+
+  useDocumentTitle(t('page-title.signin'));
 
   useEffect(() => {
     setDisableLoginButton([!email, !password].some((v) => v === true));

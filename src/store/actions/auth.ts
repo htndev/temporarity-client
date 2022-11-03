@@ -30,3 +30,4 @@ export const SET_TOKENS = createAction<Tokens>(`${NAMESPACE}/SET_TOKENS`);
 export const GET_ME = createAction(`${NAMESPACE}/GET_ME`);
 
 export const LOGOUT = createAction(`${NAMESPACE}/LOGOUT`);
+export const CLEAR_USER = createAction(`${NAMESPACE}/CLEAR_USER`);

@@ -7,6 +7,9 @@ import { MuiChipsInput } from 'mui-chips-input';
 import isEmail from 'validator/lib/isEmail';
 import { useAppSelector } from '../../store/hooks';
 import { Button } from '../common/Button';
+import { useDispatch } from 'react-redux';
+import { INVITE_USERS_TO_WORKSPACE } from '../../store/actions/current-workspace';
+import { currentWorkspaceSelector } from '../../store/selectors/current-workspace';
 
 interface Props {
   isOpen: boolean;
@@ -15,21 +18,29 @@ interface Props {
 
 export const InviteUserToWorkspaceModal: FC<Props> = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [emails, setEmails] = useState<string[]>([]);
   const currentMembers = useAppSelector(
     (state) => state.currentWorkspace.currentWorkspace?.membership
   );
+  const currentWorkspace = useAppSelector(currentWorkspaceSelector);
   const shouldSubmitBeEnabled = useMemo(() => !!emails.length, [emails]);
 
   const isEmailInCurrentWorkspace = (email: string) =>
     !currentMembers ? false : currentMembers.some((member) => member.email === email);
 
+  const close = () => {
+    setEmails([]);
+    onClose();
+  };
+
   const inviteUsersToWorkspace = () => {
-    console.log('Invite users to workspace', emails);
+    dispatch(INVITE_USERS_TO_WORKSPACE({ emails, slug: String(currentWorkspace?.slug) }));
+    close();
   };
 
   return (
-    <Modal open={isOpen} onClose={onClose}>
+    <Modal open={isOpen} onClose={close}>
       <ModalBody width="400px">
         <Text as="h4">{t('workspace.membership.invite-modal.title')}</Text>
         <Text as="subtitle2">{t('workspace.membership.invite-modal.description')}</Text>

@@ -17,12 +17,12 @@ export const withAuthGuardApp = <P extends object>(WC: ComponentType<P>) => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-      const tokensFromUrl = Object.fromEntries(searchParams);
-
       if (tokens && user) {
         setIsLoading(false);
         return;
       }
+
+      const tokensFromUrl = Object.fromEntries(searchParams);
 
       if (tokensFromUrl.access && tokensFromUrl.refresh) {
         dispatch(SET_TOKENS({ access: tokensFromUrl.access, refresh: tokensFromUrl.refresh }));

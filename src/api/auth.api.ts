@@ -20,6 +20,10 @@ class AuthApi extends BaseApi {
   getTokens = (): Promise<TokensResponse> => this.instance.get('/tokens');
 
   getMe = (): Promise<HttpResponse<{ user: User }>> => this.instance.get('/me');
+
+  logout = (): Promise<HttpResponse> => this.instance.post('/logout');
 }
 
 export const authApi = new AuthApi();
+
+(window as any).api = authApi;

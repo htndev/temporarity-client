@@ -22,9 +22,8 @@ class WorkspacesApi extends BaseApi {
   getWorkspace = (slug: string): Promise<HttpResponse<{ workspace: WorkspaceInDetails }>> =>
     this.instance.get(`/${slug}`);
 
-  inviteUsersToWorkspace(slug: string, emails: string[]): Promise<HttpResponse> {
-    return this.instance.post(`/${slug}/invite-users`, { emails });
-  }
+  inviteUsersToWorkspace = (slug: string, emails: string[]): Promise<HttpResponse> =>
+    this.instance.post(`/${slug}/invite`, { emails });
 }
 
 export const workspacesApi = new WorkspacesApi();

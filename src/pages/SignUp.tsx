@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { BASE_URL } from '../common/constants/api.constant';
 import { FULL_NAME_REGEX, PASSWORD_REGEX } from '../common/constants/regex.constant';
+import { useDocumentTitle } from '../common/hooks/use-document-title';
 import { useStyleVariables } from '../common/hooks/use-style-variables';
 import { OAuth } from '../common/types/auth.type';
 import { connectComponentHoc } from '../common/utils/connect-component-hoc';
@@ -77,6 +78,8 @@ const SignUp = () => {
 
   const getOauthUrl = (service: OAuth): `${typeof BASE_URL}/auth/${OAuth}` =>
     `${BASE_URL}/auth/${service}`;
+
+  useDocumentTitle(t('page-title.signup'));
 
   useEffect(() => {
     setIsFormValid(

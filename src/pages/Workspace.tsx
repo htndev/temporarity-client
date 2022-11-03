@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useParams, useSearchParams } from 'react-router-dom';
+import { useDocumentTitle } from '../common/hooks/use-document-title';
 import { connectComponentHoc } from '../common/utils/connect-component-hoc';
 import { Layout } from '../components/common/Layout';
 import { TabPanel } from '../components/common/TabPanel';
@@ -37,6 +38,10 @@ const Workspace: FC = () => {
     setSearchParams(searchParams);
     setCurrentTab(tab);
   };
+
+  useDocumentTitle(
+    t(`page-title.workspace-${currentTab === TabValue.Routes ? 'routes' : 'members'}`, { workspaceName: slug })
+  );
 
   useEffect(() => {
     const queryTab = searchParams.get(TAB_QUERY_PARAM);

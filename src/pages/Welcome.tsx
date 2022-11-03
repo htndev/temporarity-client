@@ -2,6 +2,7 @@ import { BoxProps, Typography, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDocumentTitle } from '../common/hooks/use-document-title';
 import { AppLink } from '../components/common/AppLink';
 import { ExternalLink } from '../components/common/ExternalLink';
 import { Logo } from '../components/common/Logo';
@@ -23,6 +24,8 @@ const Wrapper: FC<{ sx?: BoxProps }> = ({ children, sx }) => (
 export const Welcome: FC = () => {
   const theme = useTheme();
   const { t } = useTranslation();
+
+  useDocumentTitle(t('page-title.welcome'));
 
   return (
     <Box width="100%">

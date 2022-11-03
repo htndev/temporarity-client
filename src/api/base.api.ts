@@ -9,7 +9,8 @@ export class BaseApi {
   private appStore: StoreType | null = null;
   protected instance = axios.create({
     baseURL: BASE_URL,
-    withCredentials: true
+    withCredentials: true,
+    maxRedirects: 0
   });
 
   constructor(path: string = '') {
@@ -27,17 +28,7 @@ export class BaseApi {
 
       return config;
     });
-    this.instance.interceptors.response.use(
-      (response) => response.data,
-      (error) => {
-        if (error.response?.status === 401) {
-          this.appStore?.dispatch(LOGOUT());
-          window.location.replace('/signin');
-        }
-
-        throw error;
-      }
-    );
+    this.instance.interceptors.response.use((response) => response.data);
   }
 
   setupInterceptors(appStore: StoreType) {

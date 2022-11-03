@@ -12,31 +12,44 @@ export const withAuthGuardAuthorization = <P extends object>(WC: ComponentType<P
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isTokenFetched, setIsTokenFetched] = useState(false);
 
     useEffect(() => {
-      if (!tokens) {
-        setIsLoading(false);
-        return;
-      }
-
       if (tokens) {
         setIsLoading(false);
         return navigate('/dashboard');
       }
+
+      if ((!isLoading && isTokenFetched) || isLoading) {
+        return;
+      }
+
+      if (isTokenFetched && !tokens) {
+        setIsLoading(false);
+        return;
+      }
+
+      setIsLoading(true);
 
       authApi
         .getTokens()
         .then(({ tokens: newTokens }) => {
           dispatch(SET_TOKENS(newTokens));
         })
-        .catch((error) => {
-          navigate('/signin');
+        .catch(() => {
+          if (
+            !window.location.pathname.includes('signin') &&
+            !window.location.pathname.includes('signup')
+          ) {
+            navigate('/signin');
+          }
         })
         .finally(() => {
           setIsLoading(false);
+          setIsTokenFetched(true);
         });
-    }, [tokens, navigate, dispatch, isLoading]);
+    }, [tokens, isTokenFetched, isLoading]);
 
     return isLoading ? <LoadingScreen /> : <WC {...props} />;
   };

@@ -3,6 +3,7 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useDocumentTitle } from '../common/hooks/use-document-title';
 import { Workspace } from '../common/types/workspace.type';
 import { connectComponentHoc } from '../common/utils/connect-component-hoc';
 import { isEmptyValidator } from '../common/utils/validators';
@@ -80,6 +81,8 @@ const Workspaces: FC = () => {
 
     dispatch(CREATE_WORKSPACE({ requestData, navigate }));
   };
+
+  useDocumentTitle(t('page-title.workspaces'));
 
   useEffect(() => {
     if (!creatingWorkspaceError) {

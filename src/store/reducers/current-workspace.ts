@@ -1,6 +1,8 @@
+import { setInitialValues } from './../../common/utils/map-initial-state';
 import { createReducer } from '@reduxjs/toolkit';
 import { WorkspaceInDetails } from '../../common/types/workspace.type';
 import {
+  CLEAR_CURRENT_WORKSPACE,
   FETCH_CURRENT_WORKSPACE_COMPLETED,
   FETCH_CURRENT_WORKSPACE_FAILED,
   FETCH_CURRENT_WORKSPACE_STARTED,
@@ -17,14 +19,16 @@ interface CurrentWorkspaceReducer {
   usersInviteError: null | string;
 }
 
+const initialState: CurrentWorkspaceReducer = {
+  currentWorkspace: null,
+  isFetching: false,
+  error: null,
+  isUsersInviting: false,
+  usersInviteError: null
+};
+
 export const currentWorkspaceReducer = createReducer<CurrentWorkspaceReducer>(
-  {
-    currentWorkspace: null,
-    isFetching: false,
-    error: null,
-    isUsersInviting: false,
-    usersInviteError: null
-  },
+  initialState,
   (builder) =>
     builder
       .addCase(FETCH_CURRENT_WORKSPACE_STARTED, (state) => {
@@ -48,5 +52,8 @@ export const currentWorkspaceReducer = createReducer<CurrentWorkspaceReducer>(
       .addCase(INVITE_USERS_TO_WORKSPACE_FAILED, (state, { payload }) => {
         state.isUsersInviting = false;
         state.usersInviteError = payload;
+      })
+      .addCase(CLEAR_CURRENT_WORKSPACE, (state) => {
+        setInitialValues(state, initialState);
       })
 );

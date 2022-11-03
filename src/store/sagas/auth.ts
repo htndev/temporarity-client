@@ -1,15 +1,19 @@
+import { CLEAR_WORKSPACES } from './../actions/workspaces';
+import { CLEAR_CURRENT_WORKSPACE } from './../actions/current-workspace';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { authApi } from '../../api';
 import { User } from '../../common/types/user.type';
 import { NetworkError } from '../../common/utils/errors';
 import { TokensResponse } from './../../common/types/auth.type';
 import {
+  CLEAR_USER,
   FETCH_USER_COMPLETED,
   GET_ME,
   LOGIN,
   LOGIN_COMPLETED,
   LOGIN_FAILED,
   LOGIN_STARTED,
+  LOGOUT,
   SIGNUP,
   SIGNUP_COMPLETED,
   SIGNUP_FAILED,
@@ -58,8 +62,17 @@ function* getMe(): Generator {
   }
 }
 
+function* logoutWorker() {
+  yield call(authApi.logout);
+
+  yield put(CLEAR_USER());
+  yield put(CLEAR_WORKSPACES());
+  yield put(CLEAR_CURRENT_WORKSPACE());
+}
+
 export default function* watchAuth() {
   yield takeEvery(LOGIN().type, loginWorker);
   yield takeEvery(SIGNUP().type, signupWorker);
   yield takeEvery(GET_ME().type, getMe);
+  yield takeEvery(LOGOUT().type, logoutWorker);
 }

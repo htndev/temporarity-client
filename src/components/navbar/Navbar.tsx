@@ -1,10 +1,15 @@
 import MenuIcon from '@mui/icons-material/Menu';
-import { IconButton, Toolbar, Typography } from '@mui/material';
+import { Avatar, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
 import MuiAppBar from '@mui/material/AppBar';
-import { styled } from '@mui/material/styles';
-import { FC } from 'react';
+import { styled, useTheme } from '@mui/material/styles';
+import { FC, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import { DRAWER_WIDTH } from '../../common/constants/drawer.constant';
+import { LOGOUT } from '../../store/actions/auth';
+import { useAppSelector } from '../../store/hooks';
+import { userSelector } from '../../store/selectors/auth';
+import { AppLink } from '../common/AppLink';
 
 interface NavbarProps {
   isOpen: boolean;
@@ -35,6 +40,31 @@ const AppBar = styled(MuiAppBar, {
 
 export const Navbar: FC<NavbarProps> = ({ isOpen, handleDrawerOpen }) => {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const dispatch = useDispatch();
+  const user = useAppSelector(userSelector);
+  const firstLetters = useMemo(() => {
+    const [firstName, lastName] = user?.fullName.split(' ') ?? [];
+
+    return `${firstName?.[0]}${lastName?.[0]}`;
+  }, [user?.fullName]);
+  const [anchor, setAnchor] = useState<null | HTMLElement>(null);
+  const [isOpenedMenu, setIsOpenedMenu] = useState(false);
+
+  const closeMenu = () => {
+    setIsOpenedMenu(false);
+    setAnchor(null);
+  };
+
+  const openMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchor(event.currentTarget);
+    setIsOpenedMenu(true);
+  };
+
+  const onLogout = () => {
+    closeMenu();
+    dispatch(LOGOUT());
+  };
 
   return (
     <AppBar position="fixed" isOpen={isOpen}>
@@ -51,9 +81,28 @@ export const Navbar: FC<NavbarProps> = ({ isOpen, handleDrawerOpen }) => {
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" noWrap component="div">
-          {t('common.title')}
-        </Typography>
+        <AppLink to="/dashboard">
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            color={theme.palette.getContrastText(theme.palette.primary.main)}
+          >
+            {t('common.title')}
+          </Typography>
+        </AppLink>
+        <Menu
+          open={isOpenedMenu}
+          onClose={closeMenu}
+          anchorEl={anchor}
+          transformOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        >
+          <MenuItem onClick={closeMenu}>Profile</MenuItem>
+          <MenuItem onClick={onLogout}>{t('auth.button.logout.title')}</MenuItem>
+        </Menu>
+        <IconButton sx={{ marginLeft: 'auto' }} onClick={openMenu}>
+          <Avatar src={String(user?.profilePicture)}>{firstLetters}</Avatar>
+        </IconButton>
       </Toolbar>
     </AppBar>
   );

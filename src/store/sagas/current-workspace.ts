@@ -1,5 +1,4 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { isUndefined } from 'util';
 import {
   FETCH_CURRENT_WORKSPACE,
   INVITE_USERS_TO_WORKSPACE,

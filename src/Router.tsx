@@ -8,11 +8,13 @@ const SignUp = lazy(() => import('./pages/SignUp'));
 const Workspaces = lazy(() => import('./pages/Workspaces'));
 const Workspace = lazy(() => import('./pages/Workspace'));
 const NotFound = lazy(() => import('./pages/SignUp'));
+const Profile = lazy(() => import('./pages/Profile'));
 
 export const Router = () => (
   <Routes>
     <Route path="/" element={<Welcome />} />
     <Route path="/dashboard" element={<Dashboard />} />
+    <Route path="/profile" element={<Profile />} />∏
     <Route path="/signin" element={<SignIn />} />
     <Route path="/signup" element={<SignUp />} />
     <Route path="/workspaces" element={<Workspaces />} />
