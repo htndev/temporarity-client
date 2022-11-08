@@ -9,10 +9,12 @@ const Workspaces = lazy(() => import('./pages/Workspaces'));
 const Workspace = lazy(() => import('./pages/Workspace'));
 const NotFound = lazy(() => import('./pages/SignUp'));
 const Profile = lazy(() => import('./pages/Profile'));
+const FAQ = lazy(() => import('./pages/FAQ'));
 
 export const Router = () => (
   <Routes>
     <Route path="/" element={<Welcome />} />
+    <Route path="/faq" element={<FAQ />} />
     <Route path="/dashboard" element={<Dashboard />} />
     <Route path="/profile" element={<Profile />} />∏
     <Route path="/signin" element={<SignIn />} />

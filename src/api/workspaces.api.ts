@@ -24,6 +24,9 @@ class WorkspacesApi extends BaseApi {
 
   inviteUsersToWorkspace = (slug: string, emails: string[]): Promise<HttpResponse> =>
     this.instance.post(`/${slug}/invite`, { emails });
+
+  excludeMemberFromWorkspace = (slug: string, email: string): Promise<HttpResponse> =>
+    this.instance.delete(`/${slug}/exclude`, { data: { email } });
 }
 
 export const workspacesApi = new WorkspacesApi();

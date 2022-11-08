@@ -51,9 +51,14 @@ export const WorkspaceMemberItem: FC<Props> = ({
     setActionMenuRef(event.currentTarget);
     setIsOpenedMenu(true);
   };
-  const onMenuClose = () => {
+  const closeMenu = () => {
     setIsOpenedMenu(false);
     setActionMenuRef(null);
+  };
+
+  const onItemClick = (action: () => void) => () => {
+    action();
+    closeMenu();
   };
 
   return (
@@ -103,7 +108,7 @@ export const WorkspaceMemberItem: FC<Props> = ({
           <Menu
             open={isOpenedMenu}
             anchorEl={actionMenuRef}
-            onClose={onMenuClose}
+            onClose={closeMenu}
             anchorOrigin={{
               vertical: 'center',
               horizontal: 'left'
@@ -113,7 +118,7 @@ export const WorkspaceMemberItem: FC<Props> = ({
               horizontal: 'right'
             }}
           >
-            <MenuItem onClick={() => onDelete(email)}>
+            <MenuItem onClick={onItemClick(() => onDelete(email))}>
               {t('workspace.membership.delete-member')}
             </MenuItem>
           </Menu>

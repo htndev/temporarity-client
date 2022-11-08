@@ -3,6 +3,9 @@ import { createReducer } from '@reduxjs/toolkit';
 import { WorkspaceInDetails } from '../../common/types/workspace.type';
 import {
   CLEAR_CURRENT_WORKSPACE,
+  EXCLUDE_MEMBER_FROM_WORKSPACE_COMPLETED,
+  EXCLUDE_MEMBER_FROM_WORKSPACE_FAILED,
+  EXCLUDE_MEMBER_FROM_WORKSPACE_STARTED,
   FETCH_CURRENT_WORKSPACE_COMPLETED,
   FETCH_CURRENT_WORKSPACE_FAILED,
   FETCH_CURRENT_WORKSPACE_STARTED,
@@ -17,6 +20,8 @@ interface CurrentWorkspaceReducer {
   isUsersInviting: boolean;
   error: null | string;
   usersInviteError: null | string;
+  isExcludeProcessPending: boolean;
+  deleteMemberError: null | string;
 }
 
 const initialState: CurrentWorkspaceReducer = {
@@ -24,7 +29,9 @@ const initialState: CurrentWorkspaceReducer = {
   isFetching: false,
   error: null,
   isUsersInviting: false,
-  usersInviteError: null
+  usersInviteError: null,
+  isExcludeProcessPending: false,
+  deleteMemberError: null
 };
 
 export const currentWorkspaceReducer = createReducer<CurrentWorkspaceReducer>(
@@ -52,6 +59,18 @@ export const currentWorkspaceReducer = createReducer<CurrentWorkspaceReducer>(
       .addCase(INVITE_USERS_TO_WORKSPACE_FAILED, (state, { payload }) => {
         state.isUsersInviting = false;
         state.usersInviteError = payload;
+      })
+      .addCase(EXCLUDE_MEMBER_FROM_WORKSPACE_STARTED, (state) => {
+        state.isExcludeProcessPending = true;
+        state.deleteMemberError = null;
+      })
+      .addCase(EXCLUDE_MEMBER_FROM_WORKSPACE_COMPLETED, (state) => {
+        state.isExcludeProcessPending = false;
+        state.deleteMemberError = null;
+      })
+      .addCase(EXCLUDE_MEMBER_FROM_WORKSPACE_FAILED, (state, { payload }) => {
+        state.isExcludeProcessPending = false;
+        state.deleteMemberError = payload;
       })
       .addCase(CLEAR_CURRENT_WORKSPACE, (state) => {
         setInitialValues(state, initialState);

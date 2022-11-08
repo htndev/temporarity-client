@@ -1,17 +1,10 @@
-import { put, takeLatest, call } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { NetworkError } from '../../common/utils/errors';
 import { workspacesApi } from './../../api/workspaces.api';
-import { HttpResponse } from './../../common/types/common.type';
-import { Workspace } from './../../common/types/workspace.type';
 import {
-  FETCH_WORKSPACES,
-  FETCH_WORKSPACES_FAILED,
-  FETCH_WORKSPACES_STARTED,
-  FETCH_WORKSPACES_COMPLETED,
-  CREATE_WORKSPACE,
-  CREATE_WORKSPACE_STARTED,
-  CREATE_WORKSPACE_COMPLETED,
-  CREATE_WORKSPACE_FAILED
+  CREATE_WORKSPACE, CREATE_WORKSPACE_COMPLETED,
+  CREATE_WORKSPACE_FAILED, CREATE_WORKSPACE_STARTED, FETCH_WORKSPACES, FETCH_WORKSPACES_COMPLETED, FETCH_WORKSPACES_FAILED,
+  FETCH_WORKSPACES_STARTED
 } from './../actions/workspaces';
 
 function* fetchWorkspaces(): Generator {
@@ -41,7 +34,7 @@ function* createWorkspace({
   }
 }
 
-export function* watchWorkspaces() {
+export default function* watchWorkspaces() {
   yield takeLatest(FETCH_WORKSPACES, fetchWorkspaces);
 
   yield takeLatest(CREATE_WORKSPACE, createWorkspace);

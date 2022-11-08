@@ -11,9 +11,9 @@ import { useToast } from '../components/common/toastMessage';
 import { withAuthGuardApp } from '../components/hoc/AuthGuardApp';
 import { withFetchWorkspaces } from '../components/hoc/FetchWorkspaces';
 import { withHasAccessToWorkspace } from '../components/hoc/HasAccessToWorkspace';
-import { WorkspaceHeader } from '../components/workspace/WorkspaceHeader';
+import { WorkspaceHeader } from '../components/workspace-members/WorkspaceHeader';
 import { WorkspaceMembers } from '../components/workspace/WorkspaceMembers';
-import { WorkspaceRoutes } from '../components/workspace/WorkspaceRoutes';
+import { WorkspaceRoutes } from '../components/workspace-routes/WorkspaceRoutes';
 import { FETCH_CURRENT_WORKSPACE } from '../store/actions/current-workspace';
 import { useAppSelector } from '../store/hooks';
 
