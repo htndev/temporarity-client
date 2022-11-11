@@ -98,7 +98,6 @@ export const WorkspaceCreateRouteModal: FC<Props> = ({ isOpen, onClose }) => {
   }, [type]);
 
   const submitRoute = () => {
-    console.log(selectedMethods);
     if (!path || !selectedMethods.length || !responseStatus) {
       return;
     }
