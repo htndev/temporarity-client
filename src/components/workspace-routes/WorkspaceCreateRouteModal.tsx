@@ -6,6 +6,7 @@ import {
   ToggleButton,
   ToggleButtonGroup
 } from '@mui/material';
+import { uniq } from 'lodash';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
@@ -80,12 +81,7 @@ export const WorkspaceCreateRouteModal: FC<Props> = ({ isOpen, onClose }) => {
   };
 
   const handleMethodsSelect = (_: any, newMethods: HttpMethod[]) => {
-    const { [newMethods.length - 1]: newMethod } = newMethods;
-    setSelectedMethods((prev) =>
-      newMethod === HttpMethod.ALL
-        ? [HttpMethod.ALL]
-        : [...prev, newMethod].filter((method) => method !== HttpMethod.ALL)
-    );
+    setSelectedMethods(newMethods);
   };
 
   const handleResponseChange = useCallback((value: string | File) => setResponse(value), []);
@@ -102,6 +98,7 @@ export const WorkspaceCreateRouteModal: FC<Props> = ({ isOpen, onClose }) => {
   }, [type]);
 
   const submitRoute = () => {
+    console.log(selectedMethods);
     if (!path || !selectedMethods.length || !responseStatus) {
       return;
     }

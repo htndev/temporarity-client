@@ -17,7 +17,7 @@ class RoutesApi extends BaseApi {
       data = new FormData();
       Object.entries(route).forEach(([key, value]) => {
         if (Array.isArray(value)) {
-          value.forEach((value: any) => data.append(key, value));
+          value.forEach((value: any) => data.append(`${key}[]`, value));
         } else if (typeof value === 'object' && !(value instanceof File)) {
           data.append(key, JSON.stringify(value));
         } else {
