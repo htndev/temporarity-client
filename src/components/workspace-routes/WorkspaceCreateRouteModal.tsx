@@ -1,28 +1,20 @@
-import {
-  Autocomplete,
-  Box,
-  Modal,
-  TextField,
-  ToggleButton,
-  ToggleButtonGroup
-} from '@mui/material';
-import { uniq } from 'lodash';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { Box, Modal } from '@mui/material';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { HTTP_METHODS, RESPONSE_STATUS } from '../../common/constants/routes.constant';
 import {
   CreateRouteRequest,
   HttpMethod,
   WorkspaceRouteResponseType
 } from '../../common/types/routes.type';
-import { isValidJSON } from '../../common/utils/routes';
-import { isEmptyValidator } from '../../common/utils/validators';
+import { buildPathUrl, isValidJSON } from '../../common/utils/routes';
 import { CREATE_ROUTE } from '../../store/actions/routes';
 import { useAppSelector } from '../../store/hooks';
 import { Button } from '../common/Button';
-import { Input } from '../common/Input';
 import { ModalBody } from '../common/ModalBody';
+import { RoutePathInput } from '../common/RoutePathInput';
+import { SelectMethods } from '../common/SelectMethods';
+import { StatusInput } from '../common/StatusInput';
 import { useToast } from '../common/toastMessage';
 import { Text } from '../common/typography/Text';
 import { CreateFileRouteResponse } from './create-route/CreateFileRouteResponse';
@@ -35,37 +27,16 @@ interface Props {
   onClose: () => void;
 }
 
-const buildPathUrl = (path: string) => {
-  const url = new URL(path, window.location.origin);
-  const baseUrl = url.pathname.endsWith('/')
-    ? url.pathname.slice(0, url.pathname.length - 1)
-    : url.pathname;
-
-  return baseUrl;
-};
-
-const MAPPED_HTTP_STATUS = Object.keys(RESPONSE_STATUS);
-
 export const WorkspaceCreateRouteModal: FC<Props> = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
   const { toast } = useToast();
   const dispatch = useDispatch();
-  const routes = useAppSelector((state) => state.routes.routes);
   const createRouteError = useAppSelector((state) => state.routes.createRouteError);
   const [path, setPath] = useState('');
   const [type, setType] = useState<WorkspaceRouteResponseType>(WorkspaceRouteResponseType.Schema);
   const [selectedMethods, setSelectedMethods] = useState<HttpMethod[]>([]);
   const [response, setResponse] = useState<string | File | null>(null);
   const [responseStatus, setResponseStatus] = useState<string>('200');
-
-  const routeValidator = useCallback(
-    (value: string) => {
-      const route = routes.find((route) => route.path === value);
-
-      return route ? t('workspace.routes.create-route-modal.error.path.exists') : true;
-    },
-    [routes]
-  );
 
   const closeModal = () => {
     setPath('');
@@ -78,10 +49,6 @@ export const WorkspaceCreateRouteModal: FC<Props> = ({ isOpen, onClose }) => {
     if (type === WorkspaceRouteResponseType.RandomImage) {
       setResponse(null);
     }
-  };
-
-  const handleMethodsSelect = (_: any, newMethods: HttpMethod[]) => {
-    setSelectedMethods(newMethods);
   };
 
   const handleResponseChange = useCallback((value: string | File) => setResponse(value), []);
@@ -123,11 +90,6 @@ export const WorkspaceCreateRouteModal: FC<Props> = ({ isOpen, onClose }) => {
     setResponseStatus('200');
   };
 
-  const emptyValidator = useMemo(
-    () => isEmptyValidator(t('workspace.routes.create-route-modal.error.path.empty')),
-    []
-  );
-
   useEffect(() => {
     if (createRouteError) {
       toast(createRouteError, { type: 'error' });
@@ -142,41 +104,13 @@ export const WorkspaceCreateRouteModal: FC<Props> = ({ isOpen, onClose }) => {
         </header>
         <main>
           <Box>
-            <Input
-              value={path}
-              onChange={setPath}
-              rules={[emptyValidator, routeValidator]}
-              placeholder={t('workspace.routes.create-route-modal.field.path')}
-              fullWidth
-            />
-            <Text as="subtitle2">{t('workspace.routes.hints.dynamic-param')}</Text>
-            <Text as="subtitle2">{t('workspace.routes.hints.wildcard-param')}</Text>
-            <Text as="subtitle2">{t('workspace.routes.hints.double-wildcard-param')}</Text>
+            <RoutePathInput value={path} onChange={setPath} />
           </Box>
           <Box sx={{ mt: 2, mb: 2 }}>
-            <ToggleButtonGroup value={selectedMethods} onChange={handleMethodsSelect} fullWidth>
-              {HTTP_METHODS.map((status) => (
-                <ToggleButton value={status} key={status}>
-                  {status}
-                </ToggleButton>
-              ))}
-            </ToggleButtonGroup>
+            <SelectMethods value={selectedMethods} onChange={setSelectedMethods} />
           </Box>
           <Box sx={{ mt: 2, mb: 2 }}>
-            <Autocomplete
-              freeSolo
-              value={responseStatus}
-              options={MAPPED_HTTP_STATUS as []}
-              renderInput={(params) => <TextField {...params} />}
-              renderOption={(props: any, option: keyof typeof RESPONSE_STATUS) => (
-                <Box component="li" sx={{ mt: 2, '&:not(:last-child)': { mb: 2 } }} {...props}>
-                  <Text as="caption">
-                    {option} ({RESPONSE_STATUS[option]})
-                  </Text>
-                </Box>
-              )}
-              onChange={(_, value) => setResponseStatus(value as string)}
-            />
+            <StatusInput value={responseStatus} onChange={setResponseStatus} />
           </Box>
           <Box>
             <SelectResponseType

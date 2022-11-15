@@ -22,6 +22,7 @@ export const WorkspaceRoutes: FC = () => {
   const slug = useAppSelector(currentWorkspaceSlugSelector);
   const isFetchingRoutes = useAppSelector((state) => state.routes.isFetchingRoutes);
   const routes = useAppSelector(routesSelector);
+
   const filteredRoutes = useMemo(
     () =>
       [...routes]
@@ -41,18 +42,6 @@ export const WorkspaceRoutes: FC = () => {
     }
   };
 
-  const Routes = memo(() => (
-    <Box>
-      {!filteredRoutes.length ? (
-        <Text>{t('workspace.routes.no-routes')}</Text>
-      ) : (
-        filteredRoutes.map((route) => (
-          <WorkspaceRoute route={route} key={route.path + route.methods.join(',')} />
-        ))
-      )}
-    </Box>
-  ));
-
   useEffect(() => {
     if (slug) {
       dispatch(FETCH_ROUTES({ slug: slug ?? '' }));
@@ -64,7 +53,15 @@ export const WorkspaceRoutes: FC = () => {
   ) : (
     <Box sx={{ mt: 2 }}>
       <WorkspaceRoutesHeader onChange={handleSearch} />
-      <Routes />
+      <Box sx={{ pt: 2 }}>
+        {!filteredRoutes.length ? (
+          <Text>{t('workspace.routes.no-routes')}</Text>
+        ) : (
+          filteredRoutes.map((route) => (
+            <WorkspaceRoute route={route} key={route.path + route.methods.join(',')} />
+          ))
+        )}
+      </Box>
     </Box>
   );
 };

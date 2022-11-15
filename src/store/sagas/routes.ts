@@ -1,17 +1,18 @@
-import { currentWorkspaceSlugSelector } from './../selectors/current-workspace';
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { routesApi } from '../../api';
 import { HttpResponse } from './../../common/types/common.type';
 import { Route } from './../../common/types/routes.type';
 import {
+  CREATE_ROUTE,
+  CREATE_ROUTE_COMPLETED,
+  CREATE_ROUTE_FAILED,
+  CREATE_ROUTE_STARTED,
   FETCH_ROUTES,
   FETCH_ROUTES_COMPLETED,
   FETCH_ROUTES_STARTED,
-  CREATE_ROUTE,
-  CREATE_ROUTE_STARTED,
-  CREATE_ROUTE_FAILED,
-  CREATE_ROUTE_COMPLETED
+  UPDATE_ROUTE_PATH
 } from './../actions/routes';
+import { currentWorkspaceSlugSelector } from './../selectors/current-workspace';
 
 function* fetchRoutesWorker({ payload }: ReturnType<typeof FETCH_ROUTES>) {
   yield put(FETCH_ROUTES_STARTED());
@@ -39,7 +40,13 @@ function* createRouteWorker({ payload }: ReturnType<typeof CREATE_ROUTE>) {
   }
 }
 
+function* updateRoutePathWorker({ payload }: ReturnType<typeof UPDATE_ROUTE_PATH>) {
+  const slug = (yield select(currentWorkspaceSlugSelector)) as string;
+  yield put(FETCH_ROUTES({ slug }));
+}
+
 export default function* watchRoutes() {
   yield takeEvery(FETCH_ROUTES().type, fetchRoutesWorker);
   yield takeEvery(CREATE_ROUTE().type, createRouteWorker);
+  yield takeEvery(UPDATE_ROUTE_PATH().type, updateRoutePathWorker);
 }

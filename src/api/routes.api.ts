@@ -1,6 +1,6 @@
-import { containsFile } from './../common/utils/api';
-import { Route, CreateRouteRequest } from './../common/types/routes.type';
 import { HttpResponse } from '../common/types/common.type';
+import { CreateRouteRequest, Route, RouteDetails } from './../common/types/routes.type';
+import { containsFile } from './../common/utils/api';
 import { BaseApi } from './base.api';
 
 class RoutesApi extends BaseApi {
@@ -34,6 +34,18 @@ class RoutesApi extends BaseApi {
       }
     });
   };
+
+  getRouteDetails = (slug: string, routeId: string): Promise<HttpResponse<RouteDetails>> =>
+    this.instance.get(`/${slug}/details/${routeId}`);
+
+  updateRouteMethods = (slug: string, routeId: string, methods: string[]): Promise<HttpResponse> =>
+    this.instance.patch(`/${slug}/update/${routeId}/methods`, { methods });
+
+  updateRouteStatus = (slug: string, routeId: string, status: number): Promise<HttpResponse> =>
+    this.instance.patch(`/${slug}/update/${routeId}/status`, { status });
+
+  updateRoutePath = (slug: string, routeId: string, path: string): Promise<HttpResponse> =>
+    this.instance.patch(`/${slug}/update/${routeId}/path`, { path });
 }
 
 export const routesApi = new RoutesApi();

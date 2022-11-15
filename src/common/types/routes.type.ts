@@ -12,9 +12,15 @@ export enum HttpMethod {
 }
 
 export interface Route {
+  id: string;
   path: string;
   methods: HttpMethod[];
   status: number;
+}
+
+export interface RouteDetails {
+  responseType: WorkspaceRouteResponseType;
+  response: null | object | string;
 }
 
 export enum WorkspaceRouteResponseType {
@@ -23,7 +29,7 @@ export enum WorkspaceRouteResponseType {
   RandomImage = 'random-image'
 }
 
-export interface CreateRouteRequest extends Route {
+export interface CreateRouteRequest extends Omit<Route, 'id'> {
   responseType: WorkspaceRouteResponseType;
   response: PossibleArray<Record<string, unknown>> | File | null;
 }

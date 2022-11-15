@@ -1,12 +1,20 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { Route } from '../../common/types/routes.type';
+import { Route, RouteDetails } from '../../common/types/routes.type';
 import {
+  ADD_ROUTE_DETAILS,
   CREATE_ROUTE_COMPLETED,
-  CREATE_ROUTE_FAILED, CREATE_ROUTE_STARTED, FETCH_ROUTES_COMPLETED, FETCH_ROUTES_FAILED, FETCH_ROUTES_STARTED
-} from './../actions/routes';
+  CREATE_ROUTE_FAILED,
+  CREATE_ROUTE_STARTED,
+  FETCH_ROUTES_COMPLETED,
+  FETCH_ROUTES_FAILED,
+  FETCH_ROUTES_STARTED,
+  UPDATE_ROUTE_METHODS,
+  UPDATE_ROUTE_STATUS
+} from '../actions/routes';
 
 interface RoutesState {
   routes: Route[];
+  routesWithDetails: { [k: string]: RouteDetails };
   isFetchingRoutes: boolean;
   fetchRoutesError: null | string;
   isCreatingRoute: boolean;
@@ -18,7 +26,8 @@ const initialState: RoutesState = {
   isFetchingRoutes: false,
   fetchRoutesError: null,
   isCreatingRoute: false,
-  createRouteError: null
+  createRouteError: null,
+  routesWithDetails: {}
 };
 
 export const routesReducer = createReducer(initialState, (build) =>
@@ -46,5 +55,24 @@ export const routesReducer = createReducer(initialState, (build) =>
     .addCase(CREATE_ROUTE_FAILED, (state, { payload }) => {
       state.isCreatingRoute = false;
       state.createRouteError = payload;
+    })
+    .addCase(ADD_ROUTE_DETAILS, (state, { payload }) => {
+      if (payload) {
+        state.routesWithDetails[payload.routeId] = payload.details;
+      }
+    })
+    .addCase(UPDATE_ROUTE_METHODS, (state, { payload }) => {
+      const routeIndex = state.routes.findIndex((r) => r.id === payload?.routeId);
+
+      if (payload && routeIndex !== -1) {
+        state.routes[routeIndex].methods = payload.methods;
+      }
+    })
+    .addCase(UPDATE_ROUTE_STATUS, (state, { payload }) => {
+      const routeIndex = state.routes.findIndex((r) => r.id === payload?.routeId);
+
+      if (payload && routeIndex !== -1) {
+        state.routes[routeIndex].status = payload.status;
+      }
     })
 );
