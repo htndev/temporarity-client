@@ -1,7 +1,7 @@
 import { Workspace } from '../common/types/workspace.type';
-import { HttpResponse } from './../common/types/common.type';
-import { WorkspaceInDetails } from './../common/types/workspace.type';
-import { CREATE_WORKSPACE } from './../store/actions/workspaces';
+import { HttpResponse } from '../common/types/common.type';
+import { WorkspaceInDetails } from '../common/types/workspace.type';
+import { CREATE_WORKSPACE } from '../store/actions/workspaces';
 import { BaseApi } from './base.api';
 
 class WorkspacesApi extends BaseApi {

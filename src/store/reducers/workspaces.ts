@@ -1,4 +1,4 @@
-import { setInitialValues } from './../../common/utils/map-initial-state';
+import { setInitialValues } from '../../common/utils/map-initial-state';
 import { createReducer } from '@reduxjs/toolkit';
 import { Workspace } from '../../common/types/workspace.type';
 import { FETCH_WORKSPACES_STARTED } from '../actions/workspaces';
@@ -9,7 +9,7 @@ import {
   CREATE_WORKSPACE_STARTED,
   FETCH_WORKSPACES_COMPLETED,
   FETCH_WORKSPACES_FAILED
-} from './../actions/workspaces';
+} from '../actions/workspaces';
 
 interface WorkspacesReducer {
   workspaces: Workspace[];

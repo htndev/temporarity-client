@@ -1,4 +1,4 @@
-import { setInitialValues } from './../../common/utils/map-initial-state';
+import { setInitialValues } from '../../common/utils/map-initial-state';
 import { createReducer } from '@reduxjs/toolkit';
 import { WorkspaceInDetails } from '../../common/types/workspace.type';
 import {
@@ -12,7 +12,7 @@ import {
   INVITE_USERS_TO_WORKSPACE_COMPLETED,
   INVITE_USERS_TO_WORKSPACE_FAILED,
   INVITE_USERS_TO_WORKSPACE_STARTED
-} from './../actions/current-workspace';
+} from '../actions/current-workspace';
 
 interface CurrentWorkspaceReducer {
   currentWorkspace: WorkspaceInDetails | null;

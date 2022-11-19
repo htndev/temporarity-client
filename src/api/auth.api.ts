@@ -1,6 +1,7 @@
+import { Locale } from '../common/constants/locale.constant';
 import { TokensResponse } from '../common/types/auth.type';
 import { HttpResponse } from '../common/types/common.type';
-import { Tokens, User } from './../common/types/user.type';
+import { Tokens, User } from '../common/types/user.type';
 import { BaseApi } from './base.api';
 
 class AuthApi extends BaseApi {
@@ -15,6 +16,7 @@ class AuthApi extends BaseApi {
     email: string;
     password: string;
     fullName: string;
+    language: Locale;
   }): Promise<HttpResponse<Tokens>> => this.instance.post('/credentials/signup', payload);
 
   getTokens = (): Promise<TokensResponse> => this.instance.get('/tokens');

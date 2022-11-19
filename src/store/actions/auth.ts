@@ -1,6 +1,7 @@
+import { Locale } from './../../common/constants/locale.constant';
 import { createAction } from '@reduxjs/toolkit';
 import { NamespaceType } from '../../common/types/common.type';
-import { Tokens, User } from './../../common/types/user.type';
+import { Tokens, User } from '../../common/types/user.type';
 
 const NAMESPACE = 'auth';
 
@@ -13,7 +14,7 @@ export const LOGIN_COMPLETED = createAction<Tokens>(`${NAMESPACE}/LOGIN_COMPLETE
 export const LOGIN_FAILED = createAction<string>(`${NAMESPACE}/LOGIN_FAILED`);
 
 export const SIGNUP = createAction<
-  { email: string; password: string; fullName: string } | undefined,
+  { email: string; password: string; fullName: string; language: Locale } | undefined,
   NamespaceType<typeof NAMESPACE, 'SIGNUP'>
 >(`${NAMESPACE}/SIGNUP`);
 export const SIGNUP_STARTED = createAction(`${NAMESPACE}/SIGNUP_STARTED`);

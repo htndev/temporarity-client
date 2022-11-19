@@ -1,0 +1,18 @@
+"use strict";
+exports.__esModule = true;
+exports.UPDATE_ROUTE_PATH = exports.UPDATE_ROUTE_STATUS = exports.UPDATE_ROUTE_METHODS = exports.CLEAR_ROUTES_DETAILS = exports.ADD_ROUTE_DETAILS = exports.CREATE_ROUTE_FAILED = exports.CREATE_ROUTE_COMPLETED = exports.CREATE_ROUTE_STARTED = exports.CREATE_ROUTE = exports.FETCH_ROUTES_FAILED = exports.FETCH_ROUTES_COMPLETED = exports.FETCH_ROUTES_STARTED = exports.FETCH_ROUTES = void 0;
+var toolkit_1 = require("@reduxjs/toolkit");
+var NAMESPACE = 'routes';
+exports.FETCH_ROUTES = toolkit_1.createAction(NAMESPACE + "/FETCH_ROUTES");
+exports.FETCH_ROUTES_STARTED = toolkit_1.createAction(NAMESPACE + "/FETCH_ROUTES_STARTED");
+exports.FETCH_ROUTES_COMPLETED = toolkit_1.createAction(NAMESPACE + "/FETCH_ROUTES_COMPLETED");
+exports.FETCH_ROUTES_FAILED = toolkit_1.createAction(NAMESPACE + "/FETCH_ROUTES_FAILED");
+exports.CREATE_ROUTE = toolkit_1.createAction(NAMESPACE + "/CREATE_ROUTE");
+exports.CREATE_ROUTE_STARTED = toolkit_1.createAction(NAMESPACE + "/CREATE_ROUTE_STARTED");
+exports.CREATE_ROUTE_COMPLETED = toolkit_1.createAction(NAMESPACE + "/CREATE_ROUTE_COMPLETED");
+exports.CREATE_ROUTE_FAILED = toolkit_1.createAction(NAMESPACE + "/CREATE_ROUTE_FAILED");
+exports.ADD_ROUTE_DETAILS = toolkit_1.createAction(NAMESPACE + "/ADD_ROUTE_DETAILS");
+exports.CLEAR_ROUTES_DETAILS = toolkit_1.createAction(NAMESPACE + "/CLEAR_ROUTES_DETAILS");
+exports.UPDATE_ROUTE_METHODS = toolkit_1.createAction(NAMESPACE + "/UPDATE_ROUTE_METHODS");
+exports.UPDATE_ROUTE_STATUS = toolkit_1.createAction(NAMESPACE + "/UPDATE_ROUTE_STATUS");
+exports.UPDATE_ROUTE_PATH = toolkit_1.createAction(NAMESPACE + "/UPDATE_ROUTE_PATH");

@@ -1,10 +1,10 @@
-import { CLEAR_WORKSPACES } from './../actions/workspaces';
-import { CLEAR_CURRENT_WORKSPACE } from './../actions/current-workspace';
+import { CLEAR_WORKSPACES } from '../actions/workspaces';
+import { CLEAR_CURRENT_WORKSPACE } from '../actions/current-workspace';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { authApi } from '../../api';
 import { User } from '../../common/types/user.type';
 import { NetworkError } from '../../common/utils/errors';
-import { TokensResponse } from './../../common/types/auth.type';
+import { TokensResponse } from '../../common/types/auth.type';
 import {
   CLEAR_USER,
   FETCH_USER_COMPLETED,
@@ -18,7 +18,7 @@ import {
   SIGNUP_COMPLETED,
   SIGNUP_FAILED,
   SIGNUP_STARTED
-} from './../actions/auth';
+} from '../actions/auth';
 
 function* loginWorker({ payload }: ReturnType<typeof LOGIN>) {
   try {

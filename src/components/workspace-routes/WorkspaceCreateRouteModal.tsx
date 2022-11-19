@@ -92,7 +92,7 @@ export const WorkspaceCreateRouteModal: FC<Props> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (createRouteError) {
-      toast(createRouteError, { type: 'error' });
+      toast(createRouteError, { type: 'error', duration: 'short' });
     }
   }, [createRouteError]);
 

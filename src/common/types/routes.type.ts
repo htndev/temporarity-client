@@ -18,6 +18,8 @@ export interface Route {
   status: number;
 }
 
+export type ResponseType = null | object | string;
+
 export interface RouteDetails {
   responseType: WorkspaceRouteResponseType;
   response: null | object | string;

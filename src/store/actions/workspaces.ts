@@ -1,7 +1,7 @@
-import { NavigationProp } from './../../common/types/navigate.type';
+import { NavigationProp } from '../../common/types/navigate.type';
 import { createAction } from '@reduxjs/toolkit';
-import { NamespaceType } from './../../common/types/common.type';
-import { Workspace } from './../../common/types/workspace.type';
+import { NamespaceType } from '../../common/types/common.type';
+import { Workspace } from '../../common/types/workspace.type';
 
 const NAMESPACE = 'workspaces';
 

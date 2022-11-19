@@ -1,5 +1,5 @@
 import { WorkspaceRole } from '../../common/types/workspace.type';
-import { RootReducer } from './../index';
+import { RootReducer } from '../index';
 
 export const workspacesSelector = (state: RootReducer) => state.workspaces.workspaces;
 

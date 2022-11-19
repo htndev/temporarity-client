@@ -2,6 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import { Route, RouteDetails } from '../../common/types/routes.type';
 import {
   ADD_ROUTE_DETAILS,
+  CLEAR_ROUTES_DETAILS,
   CREATE_ROUTE_COMPLETED,
   CREATE_ROUTE_FAILED,
   CREATE_ROUTE_STARTED,
@@ -30,8 +31,8 @@ const initialState: RoutesState = {
   routesWithDetails: {}
 };
 
-export const routesReducer = createReducer(initialState, (build) =>
-  build
+export const routesReducer = createReducer(initialState, (build) => {
+  return build
     .addCase(FETCH_ROUTES_STARTED, (state) => {
       state.isFetchingRoutes = true;
       state.routes = [];
@@ -61,6 +62,9 @@ export const routesReducer = createReducer(initialState, (build) =>
         state.routesWithDetails[payload.routeId] = payload.details;
       }
     })
+    .addCase(CLEAR_ROUTES_DETAILS, (state) => {
+      state.routesWithDetails = {};
+    })
     .addCase(UPDATE_ROUTE_METHODS, (state, { payload }) => {
       const routeIndex = state.routes.findIndex((r) => r.id === payload?.routeId);
 
@@ -74,5 +78,5 @@ export const routesReducer = createReducer(initialState, (build) =>
       if (payload && routeIndex !== -1) {
         state.routes[routeIndex].status = payload.status;
       }
-    })
-);
+    });
+});

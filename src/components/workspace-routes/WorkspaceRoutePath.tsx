@@ -14,8 +14,7 @@ type PathPartStructure = {
 enum PathPart {
   Param = 'param',
   Word = 'word',
-  Wildcard = 'wildcard',
-  DoubleWildcard = 'doubleWildcard'
+  Wildcard = 'wildcard'
 }
 
 const getPathPart = (path: string): PathPartStructure => {
@@ -23,11 +22,6 @@ const getPathPart = (path: string): PathPartStructure => {
     case path.startsWith(':'):
       return {
         type: PathPart.Param,
-        value: path
-      };
-    case path.startsWith('**'):
-      return {
-        type: PathPart.DoubleWildcard,
         value: path
       };
     case path.includes('*'):
@@ -50,8 +44,6 @@ const PathPartItem = styled('span', { shouldForwardProp: (prop) => prop !== 'typ
     switch (type) {
       case PathPart.Param:
         return theme.palette.warning.main;
-      case PathPart.DoubleWildcard:
-        return theme.palette.secondary.dark;
       case PathPart.Wildcard:
         return theme.palette.success.dark;
       default:

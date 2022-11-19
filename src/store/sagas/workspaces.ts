@@ -1,11 +1,11 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { NetworkError } from '../../common/utils/errors';
-import { workspacesApi } from './../../api/workspaces.api';
+import { workspacesApi } from '../../api/workspaces.api';
 import {
   CREATE_WORKSPACE, CREATE_WORKSPACE_COMPLETED,
   CREATE_WORKSPACE_FAILED, CREATE_WORKSPACE_STARTED, FETCH_WORKSPACES, FETCH_WORKSPACES_COMPLETED, FETCH_WORKSPACES_FAILED,
   FETCH_WORKSPACES_STARTED
-} from './../actions/workspaces';
+} from '../actions/workspaces';
 
 function* fetchWorkspaces(): Generator {
   try {

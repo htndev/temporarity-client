@@ -1,6 +1,6 @@
-import { setInitialValues } from './../../common/utils/map-initial-state';
+import { setInitialValues } from '../../common/utils/map-initial-state';
 import { createReducer } from '@reduxjs/toolkit';
-import { Tokens, User } from './../../common/types/user.type';
+import { Tokens, User } from '../../common/types/user.type';
 import {
   CLEAR_USER,
   FETCH_USER_COMPLETED,
@@ -12,7 +12,7 @@ import {
   SET_TOKENS,
   SIGNUP_COMPLETED,
   SIGNUP_STARTED
-} from './../actions/auth';
+} from '../actions/auth';
 
 interface AuthStateReducer {
   user: User | null;

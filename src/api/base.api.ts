@@ -1,7 +1,6 @@
-import axios, { AxiosInstance } from 'axios';
+import axios from 'axios';
 import { BASE_URL } from '../common/constants/api.constant';
-import { LOGOUT } from '../store/actions/auth';
-import { RootReducer, store } from './../store';
+import { store } from '../store';
 
 type StoreType = typeof store;
 
@@ -10,7 +9,7 @@ export class BaseApi {
   protected instance = axios.create({
     baseURL: BASE_URL,
     withCredentials: true,
-    maxRedirects: 0
+    maxRedirects: 0,
   });
 
   constructor(path: string = '') {

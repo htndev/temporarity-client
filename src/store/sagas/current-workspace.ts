@@ -10,13 +10,13 @@ import {
   INVITE_USERS_TO_WORKSPACE_FAILED,
   INVITE_USERS_TO_WORKSPACE_STARTED
 } from '../actions/current-workspace';
-import { workspacesApi } from './../../api/workspaces.api';
-import { NetworkError } from './../../common/utils/errors';
+import { workspacesApi } from '../../api/workspaces.api';
+import { NetworkError } from '../../common/utils/errors';
 import {
   FETCH_CURRENT_WORKSPACE_COMPLETED,
   FETCH_CURRENT_WORKSPACE_FAILED,
   FETCH_CURRENT_WORKSPACE_STARTED
-} from './../actions/current-workspace';
+} from '../actions/current-workspace';
 
 function* fetchCurrentWorkspaceWorker({
   payload

@@ -12,7 +12,7 @@ import { FC, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { routesApi } from '../../api';
-import { HttpMethod, Route } from '../../common/types/routes.type';
+import { HttpMethod, Route, RouteDetails } from '../../common/types/routes.type';
 import { RootReducer } from '../../store';
 import {
   ADD_ROUTE_DETAILS,
@@ -142,14 +142,11 @@ export const WorkspaceRoute: FC<Props> = ({ route }) => {
       return;
     }
 
-    const savedPath = route.path;
-
     try {
       await routesApi.updateRoutePath(currentWorkspaceSlug ?? '', route.id, path);
       dispatch(UPDATE_ROUTE_PATH({ routeId: route.id, path }));
     } catch (error: any) {
       toast(error.response.data.message, { type: 'error' });
-      dispatch(UPDATE_ROUTE_PATH({ routeId: route.id, path: savedPath }));
     }
   };
 
@@ -162,7 +159,7 @@ export const WorkspaceRoute: FC<Props> = ({ route }) => {
     try {
       await routesApi.updateRouteMethods(currentWorkspaceSlug ?? '', route.id, methods);
       toast(t('workspace.routes.update-route.methods', { route: route.path }), { type: 'success' });
-      dispatch(FETCH_ROUTES());
+      dispatch(FETCH_ROUTES({ slug: currentWorkspaceSlug ?? '' }));
     } catch (error: any) {
       dispatch(UPDATE_ROUTE_METHODS({ routeId: route.id, methods: savedMethods }));
       toast(error.response.data.message, { type: 'error' });
@@ -182,6 +179,12 @@ export const WorkspaceRoute: FC<Props> = ({ route }) => {
     } catch (error: any) {
       dispatch(UPDATE_ROUTE_STATUS({ routeId: route.id, status: previousStatus }));
     }
+  };
+
+  const updateResponse = async (responseDetails: RouteDetails) => {
+    await routesApi.updateRouteResponse(currentWorkspaceSlug ?? '', route.id, responseDetails);
+    toast(t('workspace.routes.update-route.response', { route: route.path }), { type: 'success' });
+    dispatch(FETCH_ROUTES({ slug: currentWorkspaceSlug ?? '' }));
   };
 
   return (
@@ -212,6 +215,7 @@ export const WorkspaceRoute: FC<Props> = ({ route }) => {
               onPathUpdate={updatePath}
               onMethodsUpdate={updateMethod}
               onStatusUpdate={updateStatus}
+              onResponseUpdate={updateResponse}
             />
           )}
         </Box>

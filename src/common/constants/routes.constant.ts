@@ -1,4 +1,4 @@
-import { HttpMethod } from './../types/routes.type';
+import { HttpMethod } from '../types/routes.type';
 
 export const HTTP_METHODS = Object.values(HttpMethod);
 

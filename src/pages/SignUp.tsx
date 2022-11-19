@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { BASE_URL } from '../common/constants/api.constant';
+import { Locale } from '../common/constants/locale.constant';
 import { FULL_NAME_REGEX, PASSWORD_REGEX } from '../common/constants/regex.constant';
 import { useDocumentTitle } from '../common/hooks/use-document-title';
 import { useStyleVariables } from '../common/hooks/use-style-variables';
@@ -28,7 +29,7 @@ import { isLoadingSelector } from '../store/selectors/auth';
 const SignUp = () => {
   const dispatch = useDispatch();
   const isLoading = useAppSelector(isLoadingSelector);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { spacing } = useStyleVariables();
 
   const [fullName, setFullName] = useState('');
@@ -66,6 +67,8 @@ const SignUp = () => {
       FULL_NAME_REGEX().test(v) || t('auth.validator.fullNameFormat')
   ];
 
+  console.log(i18n.language);
+
   const signUp = (e: FormEvent) => {
     e.preventDefault();
 
@@ -73,7 +76,7 @@ const SignUp = () => {
       return;
     }
 
-    dispatch(SIGNUP({ email, password, fullName }));
+    dispatch(SIGNUP({ email, password, fullName, language: i18n.language as Locale }));
   };
 
   const getOauthUrl = (service: OAuth): `${typeof BASE_URL}/auth/${OAuth}` =>

@@ -1,7 +1,9 @@
+import { CLEAR_ROUTES_DETAILS } from './../actions/routes';
+import { AxiosError } from 'axios';
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { routesApi } from '../../api';
-import { HttpResponse } from './../../common/types/common.type';
-import { Route } from './../../common/types/routes.type';
+import { HttpResponse } from '../../common/types/common.type';
+import { Route } from '../../common/types/routes.type';
 import {
   CREATE_ROUTE,
   CREATE_ROUTE_COMPLETED,
@@ -11,11 +13,12 @@ import {
   FETCH_ROUTES_COMPLETED,
   FETCH_ROUTES_STARTED,
   UPDATE_ROUTE_PATH
-} from './../actions/routes';
-import { currentWorkspaceSlugSelector } from './../selectors/current-workspace';
+} from '../actions/routes';
+import { currentWorkspaceSlugSelector } from '../selectors/current-workspace';
 
 function* fetchRoutesWorker({ payload }: ReturnType<typeof FETCH_ROUTES>) {
   yield put(FETCH_ROUTES_STARTED());
+  yield put(CLEAR_ROUTES_DETAILS());
 
   try {
     const response = (yield call(routesApi.getRoutes, payload?.slug ?? '')) as HttpResponse<{
@@ -36,7 +39,8 @@ function* createRouteWorker({ payload }: ReturnType<typeof CREATE_ROUTE>) {
     yield put(CREATE_ROUTE_COMPLETED());
     yield put(FETCH_ROUTES({ slug }));
   } catch (e: any) {
-    yield put(CREATE_ROUTE_FAILED(e.message));
+    const error = e as AxiosError;
+    yield put(CREATE_ROUTE_FAILED((error.response?.data as any).message ?? e.message));
   }
 }
 

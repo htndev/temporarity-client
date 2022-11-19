@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
-import { NamespaceType } from './../../common/types/common.type';
-import { WorkspaceInDetails } from './../../common/types/workspace.type';
+import { NamespaceType } from '../../common/types/common.type';
+import { WorkspaceInDetails } from '../../common/types/workspace.type';
 
 export const NAMESPACE = 'current-workspace';
 

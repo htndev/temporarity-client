@@ -29,7 +29,6 @@ export const RoutePathInput: FC<Props> = ({ value, onChange, onBlur }) => {
       />
       <Text as="subtitle2">{t('workspace.routes.hints.dynamic-param')}</Text>
       <Text as="subtitle2">{t('workspace.routes.hints.wildcard-param')}</Text>
-      <Text as="subtitle2">{t('workspace.routes.hints.double-wildcard-param')}</Text>
     </>
   );
 };

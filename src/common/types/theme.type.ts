@@ -1,4 +1,4 @@
-import { GENERAL_COLORS, SPACING, THEME } from './../config/theme.constant';
+import { GENERAL_COLORS, SPACING, THEME } from '../config/theme.constant';
 
 export type ThemeColors = typeof GENERAL_COLORS;
 

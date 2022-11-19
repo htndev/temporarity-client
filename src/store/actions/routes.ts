@@ -1,11 +1,11 @@
 import { createAction } from '@reduxjs/toolkit';
-import { HttpResponse, NamespaceType } from './../../common/types/common.type';
+import { HttpResponse, NamespaceType } from '../../common/types/common.type';
 import {
   CreateRouteRequest,
   Route,
   RouteDetails,
   HttpMethod
-} from './../../common/types/routes.type';
+} from '../../common/types/routes.type';
 
 const NAMESPACE = 'routes';
 
@@ -31,6 +31,8 @@ export const ADD_ROUTE_DETAILS = createAction<
   { routeId: string; details: RouteDetails } | undefined,
   NamespaceType<typeof NAMESPACE, 'ADD_ROUTE_DETAILS'>
 >(`${NAMESPACE}/ADD_ROUTE_DETAILS`);
+
+export const CLEAR_ROUTES_DETAILS = createAction(`${NAMESPACE}/CLEAR_ROUTES_DETAILS`);
 
 export const UPDATE_ROUTE_METHODS = createAction<
   { routeId: string; methods: HttpMethod[] } | undefined,

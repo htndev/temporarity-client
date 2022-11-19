@@ -1,4 +1,4 @@
-import { HttpResponse } from './../types/common.type';
+import { HttpResponse } from '../types/common.type';
 
 interface ErrorWrapper {
   statusCode: number;
