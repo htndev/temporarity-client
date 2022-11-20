@@ -3,7 +3,6 @@ import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { routesApi } from '../../api';
-import { API_ROUTES } from '../../common/constants/dist/api.constant';
 import {
   HttpMethod,
   Route,
