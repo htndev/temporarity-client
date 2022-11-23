@@ -13,6 +13,8 @@ export const LOCALE_FLAG: { [k in Locale | 'DEFAULT']: string } = {
   DEFAULT: '🏴‍☠️'
 };
 
+export const DEFAULT_LOCALE = Locale.EN_US;
+
 export const AVAIlABLE_LOCALES = [Locale.EN, Locale.EN_US, Locale.EN_GB, Locale.UK];
 
 export const FALLBACK_LOCALE_I18N_KEY = 'i18n.locale.unknown';

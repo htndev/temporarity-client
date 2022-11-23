@@ -1,7 +1,7 @@
 import { Locale } from '../common/constants/locale.constant';
 import { TokensResponse } from '../common/types/auth.type';
 import { HttpResponse } from '../common/types/common.type';
-import { Tokens, User } from '../common/types/user.type';
+import { Tokens, User, UserPreferences } from '../common/types/user.type';
 import { BaseApi } from './base.api';
 
 class AuthApi extends BaseApi {
@@ -22,6 +22,9 @@ class AuthApi extends BaseApi {
   getTokens = (): Promise<TokensResponse> => this.instance.get('/tokens');
 
   getMe = (): Promise<HttpResponse<{ user: User }>> => this.instance.get('/me');
+
+  getPreferences = (): Promise<HttpResponse<{ preferences: UserPreferences }>> =>
+    this.instance.get('/user-preferences');
 
   logout = (): Promise<HttpResponse> => this.instance.post('/logout');
 }

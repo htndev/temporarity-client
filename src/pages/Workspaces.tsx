@@ -1,5 +1,5 @@
 import { Grid, Tab, Tabs, Typography } from '@mui/material';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';

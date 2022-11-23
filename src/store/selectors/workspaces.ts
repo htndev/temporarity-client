@@ -15,7 +15,7 @@ export const myWorkspacesSelector = (state: RootReducer) =>
 export const sharedWorkspacesSelector = (state: RootReducer) =>
   state.workspaces.workspaces.filter((workspace) => {
     const membership = workspace.membership.find(
-      (membership) => membership.id === state.auth.user?.email
+      (membership) => membership.email === state.auth.user?.email
     );
 
     return membership?.role === WorkspaceRole.Editor;

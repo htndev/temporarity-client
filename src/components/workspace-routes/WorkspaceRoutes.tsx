@@ -1,5 +1,6 @@
 import { Box, LinearProgress } from '@mui/material';
-import { FC, memo, useEffect, useMemo, useState } from 'react';
+import { isEqual } from 'lodash';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { HttpMethod } from '../../common/types/routes.type';
@@ -10,7 +11,6 @@ import { routesSelector } from '../../store/selectors/routes';
 import { Text } from '../common/typography/Text';
 import { WorkspaceRoute } from './WorkspaceRoute';
 import { WorkspaceRoutesHeader } from './WorkspaceRoutesHeader';
-import { isEqual } from 'lodash';
 
 export const WorkspaceRoutes: FC = () => {
   const [searchFilters, setSearchFilters] = useState<{ methods: HttpMethod[]; search: string }>({

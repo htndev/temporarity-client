@@ -1,9 +1,15 @@
+import { AxiosError } from 'axios';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { NetworkError } from '../../common/utils/errors';
 import { workspacesApi } from '../../api/workspaces.api';
+import { HttpResponse } from '../../common/types/common.type';
 import {
-  CREATE_WORKSPACE, CREATE_WORKSPACE_COMPLETED,
-  CREATE_WORKSPACE_FAILED, CREATE_WORKSPACE_STARTED, FETCH_WORKSPACES, FETCH_WORKSPACES_COMPLETED, FETCH_WORKSPACES_FAILED,
+  CREATE_WORKSPACE,
+  CREATE_WORKSPACE_COMPLETED,
+  CREATE_WORKSPACE_FAILED,
+  CREATE_WORKSPACE_STARTED,
+  FETCH_WORKSPACES,
+  FETCH_WORKSPACES_COMPLETED,
+  FETCH_WORKSPACES_FAILED,
   FETCH_WORKSPACES_STARTED
 } from '../actions/workspaces';
 
@@ -14,8 +20,8 @@ function* fetchWorkspaces(): Generator {
 
     yield put(FETCH_WORKSPACES_COMPLETED(response));
   } catch (e: any) {
-    const error: NetworkError = e;
-    yield put(FETCH_WORKSPACES_FAILED(error.message));
+    const error: AxiosError<HttpResponse> = e;
+    yield put(FETCH_WORKSPACES_FAILED(error.response?.data.message ?? ''));
   }
 }
 
@@ -29,8 +35,8 @@ function* createWorkspace({
     yield put(FETCH_WORKSPACES());
     navigate(`/workspaces/${requestData.slug}`);
   } catch (e: any) {
-    const error: NetworkError = e;
-    yield put(CREATE_WORKSPACE_FAILED(error.message));
+    const error: AxiosError<HttpResponse> = e;
+    yield put(CREATE_WORKSPACE_FAILED(error.response?.data.message ?? ''));
   }
 }
 

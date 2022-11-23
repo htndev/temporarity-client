@@ -1,3 +1,6 @@
+import { SET_PREFERENCES, SET_FULL_NAME, SET_EMAIL, SET_LANGUAGE } from '../actions/auth';
+import { DEFAULT_LOCALE } from '../../common/constants/locale.constant';
+import { UserPreferences } from '../../common/types/user.type';
 import { setInitialValues } from '../../common/utils/map-initial-state';
 import { createReducer } from '@reduxjs/toolkit';
 import { Tokens, User } from '../../common/types/user.type';
@@ -19,13 +22,17 @@ interface AuthStateReducer {
   tokens: null | Tokens;
   isLoading: boolean;
   error: null | string;
+  preferences: UserPreferences;
 }
 
 const initialState: AuthStateReducer = {
   user: null,
   tokens: null,
   isLoading: false,
-  error: null
+  error: null,
+  preferences: {
+    language: DEFAULT_LOCALE
+  }
 };
 
 export const authReducer = createReducer<AuthStateReducer>(initialState, (builder) =>
@@ -61,6 +68,18 @@ export const authReducer = createReducer<AuthStateReducer>(initialState, (builde
     })
     .addCase(SET_TOKENS, (state, action) => {
       state.tokens = action.payload;
+    })
+    .addCase(SET_PREFERENCES, (state, action) => {
+      state.preferences = action.payload;
+    })
+    .addCase(SET_FULL_NAME, (state, action) => {
+      state.user!.fullName = action.payload;
+    })
+    .addCase(SET_EMAIL, (state, action) => {
+      state.user!.email = action.payload;
+    })
+    .addCase(SET_LANGUAGE, (state, action) => {
+      state.preferences.language = action.payload;
     })
     .addCase(CLEAR_USER, (state) => {
       setInitialValues(state, initialState);

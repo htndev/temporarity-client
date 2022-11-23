@@ -7,6 +7,7 @@ export const Input: FC<
   Omit<TextFieldProps, 'onChange' | 'value'> & {
     value: string;
     rules?: ValidatorFn[];
+    originalLabel?: string;
     isCorrect?: boolean;
     onChange(string: string): void;
     onValidationStateChange?: (value: boolean) => void;
@@ -17,6 +18,7 @@ export const Input: FC<
   isCorrect = false,
   rules = [],
   value,
+  originalLabel,
   onChange,
   onValidationStateChange,
   ...props
@@ -78,6 +80,7 @@ export const Input: FC<
       value={input}
       error={isInitialState ? false : !isValid}
       helperText={displayLabel}
+      label={originalLabel}
       onChange={(e) => onInputChange(e.target.value)}
       sx={{ marginBottom: spacing.spacing2, ...sx }}
       {...props}

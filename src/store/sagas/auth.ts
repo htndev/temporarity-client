@@ -1,10 +1,10 @@
-import { CLEAR_WORKSPACES } from '../actions/workspaces';
-import { CLEAR_CURRENT_WORKSPACE } from '../actions/current-workspace';
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { AxiosError } from 'axios';
+import { all, call, put, takeEvery } from 'redux-saga/effects';
 import { authApi } from '../../api';
-import { User } from '../../common/types/user.type';
-import { NetworkError } from '../../common/utils/errors';
+import { preferencesApi } from '../../api/preferences.api';
 import { TokensResponse } from '../../common/types/auth.type';
+import { HttpResponse } from '../../common/types/common.type';
+import { User, UserPreferences } from '../../common/types/user.type';
 import {
   CLEAR_USER,
   FETCH_USER_COMPLETED,
@@ -13,12 +13,13 @@ import {
   LOGIN_COMPLETED,
   LOGIN_FAILED,
   LOGIN_STARTED,
-  LOGOUT,
-  SIGNUP,
+  LOGOUT, SET_PREFERENCES, SIGNUP,
   SIGNUP_COMPLETED,
   SIGNUP_FAILED,
   SIGNUP_STARTED
 } from '../actions/auth';
+import { CLEAR_CURRENT_WORKSPACE } from '../actions/current-workspace';
+import { CLEAR_WORKSPACES } from '../actions/workspaces';
 
 function* loginWorker({ payload }: ReturnType<typeof LOGIN>) {
   try {
@@ -30,8 +31,8 @@ function* loginWorker({ payload }: ReturnType<typeof LOGIN>) {
       LOGIN_COMPLETED({ access: response.tokens.access, refresh: response.tokens.refresh })
     );
   } catch (e: any) {
-    const error: NetworkError = e;
-    yield put(LOGIN_FAILED(error.message));
+    const error: AxiosError<HttpResponse> = e;
+    yield put(LOGIN_FAILED(error?.response?.data?.message ?? ''));
   }
 }
 
@@ -45,20 +46,23 @@ function* signupWorker({ payload }: ReturnType<typeof SIGNUP>) {
       SIGNUP_COMPLETED({ access: response.tokens.access, refresh: response.tokens.refresh })
     );
   } catch (e: any) {
-    const error: NetworkError = e;
-    yield put(SIGNUP_FAILED(error.message));
+    const error: AxiosError<HttpResponse> = e;
+    yield put(SIGNUP_FAILED(error?.response?.data?.message ?? ''));
   }
 }
 
 function* getMe(): Generator {
   try {
-    const response = (yield call(authApi.getMe)) as { user: User };
+    // @ts-ignore
+    const [authResponse, preferencesResponse]: [{ user: User }, { preferences: UserPreferences }] =
+      yield all([call(authApi.getMe), call(preferencesApi.getPreferences)]) as any;
 
-    yield put(FETCH_USER_COMPLETED(response.user));
+    yield put(FETCH_USER_COMPLETED(authResponse.user));
+    yield put(SET_PREFERENCES(preferencesResponse.preferences));
   } catch (e: any) {
-    const error: NetworkError = e;
+    const error: AxiosError<HttpResponse> = e;
 
-    yield put(LOGIN_FAILED(error.message));
+    yield put(LOGIN_FAILED(error?.response?.data?.message ?? ''));
   }
 }
 

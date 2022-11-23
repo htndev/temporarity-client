@@ -1,4 +1,4 @@
-import { CLEAR_ROUTES_DETAILS } from './../actions/routes';
+import { CLEAR_ROUTES_DETAILS, FETCH_ROUTES_FAILED } from '../actions/routes';
 import { AxiosError } from 'axios';
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { routesApi } from '../../api';
@@ -25,8 +25,9 @@ function* fetchRoutesWorker({ payload }: ReturnType<typeof FETCH_ROUTES>) {
       routes: Route[];
     }>;
     yield put(FETCH_ROUTES_COMPLETED(response));
-  } catch (error: any) {
-    yield put(FETCH_ROUTES_COMPLETED(error.message));
+  } catch (e: any) {
+    const error: AxiosError<HttpResponse> = e;
+    yield put(FETCH_ROUTES_FAILED(error?.response?.data?.message ?? ''));
   }
 }
 
@@ -39,8 +40,8 @@ function* createRouteWorker({ payload }: ReturnType<typeof CREATE_ROUTE>) {
     yield put(CREATE_ROUTE_COMPLETED());
     yield put(FETCH_ROUTES({ slug }));
   } catch (e: any) {
-    const error = e as AxiosError;
-    yield put(CREATE_ROUTE_FAILED((error.response?.data as any).message ?? e.message));
+    const error: AxiosError<HttpResponse> = e;
+    yield put(CREATE_ROUTE_FAILED(error?.response?.data?.message ?? ''));
   }
 }
 

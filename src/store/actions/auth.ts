@@ -1,4 +1,5 @@
-import { Locale } from './../../common/constants/locale.constant';
+import { UserPreferences } from '../../common/types/user.type';
+import { Locale } from '../../common/constants/locale.constant';
 import { createAction } from '@reduxjs/toolkit';
 import { NamespaceType } from '../../common/types/common.type';
 import { Tokens, User } from '../../common/types/user.type';
@@ -27,6 +28,10 @@ export const FETCH_USER_COMPLETED = createAction<User>(`${NAMESPACE}/FETCH_USER_
 export const FETCH_USER_FAILED = createAction<string>(`${NAMESPACE}/FETCH_USER_FAILED`);
 
 export const SET_TOKENS = createAction<Tokens>(`${NAMESPACE}/SET_TOKENS`);
+export const SET_PREFERENCES = createAction<UserPreferences>(`${NAMESPACE}/SET_PREFERENCES`);
+export const SET_LANGUAGE = createAction<Locale>(`${NAMESPACE}/SET_LANGUAGE`);
+export const SET_FULL_NAME = createAction<string>(`${NAMESPACE}/SET_FULL_NAME`);
+export const SET_EMAIL = createAction<string>(`${NAMESPACE}/SET_EMAIL`);
 
 export const GET_ME = createAction(`${NAMESPACE}/GET_ME`);
 

@@ -67,8 +67,6 @@ const SignUp = () => {
       FULL_NAME_REGEX().test(v) || t('auth.validator.fullNameFormat')
   ];
 
-  console.log(i18n.language);
-
   const signUp = (e: FormEvent) => {
     e.preventDefault();
 

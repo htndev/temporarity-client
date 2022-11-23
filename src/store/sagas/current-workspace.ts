@@ -1,21 +1,20 @@
+import { AxiosError } from 'axios';
 import { call, put, takeEvery } from 'redux-saga/effects';
+import { workspacesApi } from '../../api/workspaces.api';
+import { HttpResponse } from '../../common/types/common.type';
 import {
   EXCLUDE_MEMBER_FROM_WORKSPACE,
   EXCLUDE_MEMBER_FROM_WORKSPACE_COMPLETED,
   EXCLUDE_MEMBER_FROM_WORKSPACE_FAILED,
   EXCLUDE_MEMBER_FROM_WORKSPACE_STARTED,
   FETCH_CURRENT_WORKSPACE,
+  FETCH_CURRENT_WORKSPACE_COMPLETED,
+  FETCH_CURRENT_WORKSPACE_FAILED,
+  FETCH_CURRENT_WORKSPACE_STARTED,
   INVITE_USERS_TO_WORKSPACE,
   INVITE_USERS_TO_WORKSPACE_COMPLETED,
   INVITE_USERS_TO_WORKSPACE_FAILED,
   INVITE_USERS_TO_WORKSPACE_STARTED
-} from '../actions/current-workspace';
-import { workspacesApi } from '../../api/workspaces.api';
-import { NetworkError } from '../../common/utils/errors';
-import {
-  FETCH_CURRENT_WORKSPACE_COMPLETED,
-  FETCH_CURRENT_WORKSPACE_FAILED,
-  FETCH_CURRENT_WORKSPACE_STARTED
 } from '../actions/current-workspace';
 
 function* fetchCurrentWorkspaceWorker({
@@ -28,8 +27,8 @@ function* fetchCurrentWorkspaceWorker({
 
     yield put(FETCH_CURRENT_WORKSPACE_COMPLETED(response));
   } catch (e: any) {
-    const error: NetworkError = e;
-    yield put(FETCH_CURRENT_WORKSPACE_FAILED(error.message));
+    const error: AxiosError<HttpResponse> = e;
+    yield put(FETCH_CURRENT_WORKSPACE_FAILED(error?.response?.data?.message ?? ''));
   }
 }
 
@@ -47,8 +46,8 @@ function* inviteUsersToWorkspaceWorker({
 
     yield put(INVITE_USERS_TO_WORKSPACE_COMPLETED());
   } catch (e: any) {
-    const error: NetworkError = e;
-    yield put(INVITE_USERS_TO_WORKSPACE_FAILED(error.message));
+    const error: AxiosError<HttpResponse> = e;
+    yield put(INVITE_USERS_TO_WORKSPACE_FAILED(error?.response?.data?.message ?? ''));
   }
 }
 
@@ -65,8 +64,8 @@ function* deleteMemberFromWorkspace({ payload }: ReturnType<typeof EXCLUDE_MEMBE
 
     yield put(FETCH_CURRENT_WORKSPACE({ slug: payload.slug }));
   } catch (e: any) {
-    const error: NetworkError = e;
-    yield put(EXCLUDE_MEMBER_FROM_WORKSPACE_FAILED(error.message));
+    const error: AxiosError<HttpResponse> = e;
+    yield put(EXCLUDE_MEMBER_FROM_WORKSPACE_FAILED(error?.response?.data?.message ?? ''));
   }
 }
 

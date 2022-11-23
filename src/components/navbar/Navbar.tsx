@@ -97,8 +97,14 @@ export const Navbar: FC<NavbarProps> = ({ isOpen, handleDrawerOpen }) => {
           anchorEl={anchor}
           transformOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
-          <MenuItem onClick={closeMenu}>Profile</MenuItem>
-          <MenuItem onClick={onLogout}>{t('auth.button.logout.title')}</MenuItem>
+          <MenuItem onClick={closeMenu}>
+            <AppLink color={theme.palette.text.secondary} to="/profile">
+              {t('profile.title')}
+            </AppLink>
+          </MenuItem>
+          <MenuItem onClick={onLogout}>
+            {t('auth.button.logout.title')}
+          </MenuItem>
         </Menu>
         <IconButton sx={{ marginLeft: 'auto' }} onClick={openMenu}>
           <Avatar src={String(user?.profilePicture)}>{firstLetters}</Avatar>

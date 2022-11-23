@@ -1,7 +1,7 @@
 import { Box, Paper } from '@mui/material';
 import { FC, HTMLAttributes, ReactChild } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Locale } from '../../../common/constants/locale.constant';
 import { useStyleVariables } from '../../../common/hooks/use-style-variables';
 import { Logo } from '../Logo';
 import { LanguageSwitcher } from './LanguageSwitcher';
@@ -36,14 +36,19 @@ const Form = styled.form`
   border-radius: 4px;
 `;
 
-export const AuthForm: FC<HTMLAttributes<HTMLFormElement>> = ({ children, ...props }) => (
-  <>
-    <Logo regular />
-    <Paper elevation={1}>
-      <Form {...props}>
-        <LanguageSwitcher />
-        {children}
-      </Form>
-    </Paper>
-  </>
-);
+export const AuthForm: FC<HTMLAttributes<HTMLFormElement>> = ({ children, ...props }) => {
+  const { i18n } = useTranslation();
+  const handleLanguageChange = (locale: string) => i18n.changeLanguage(locale);
+
+  return (
+    <>
+      <Logo regular />
+      <Paper elevation={1}>
+        <Form {...props}>
+          <LanguageSwitcher align="right" onChange={handleLanguageChange} />
+          {children}
+        </Form>
+      </Paper>
+    </>
+  );
+};
