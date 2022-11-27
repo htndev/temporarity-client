@@ -36,17 +36,17 @@ export const ApiKeyAuthorizationStrategy: FC<Props> = ({ payload: initialPayload
       <Box>
         <Input
           value={payload.apiKey}
-          originalLabel={t('API Key')}
+          originalLabel={t('workspace.routes.authorization.strategy.api-key.label.api-key')}
           onChange={(value) => setPayload((prev) => ({ ...prev, apiKey: value }))}
-          rules={[isEmptyValidator(t('API Key field should not be empty'))]}
+          rules={[isEmptyValidator(t('workspace.routes.authorization.strategy.api-key.rule.empty.api-key'))]}
         />
       </Box>
       <Box>
         <Input
           value={payload.apiKeyQueryParam}
-          originalLabel={t('API Key Query Param')}
+          originalLabel={t('workspace.routes.authorization.strategy.api-key.label.api-key-query-param')}
           onChange={(value) => setPayload((prev) => ({ ...prev, apiKeyQueryParam: value }))}
-          rules={[isEmptyValidator(t('API Key Query Parameter field should not be empty'))]}
+          rules={[isEmptyValidator(t('workspace.routes.authorization.strategy.api-key.rule.empty.api-key-query-param'))]}
         />
       </Box>
     </Box>

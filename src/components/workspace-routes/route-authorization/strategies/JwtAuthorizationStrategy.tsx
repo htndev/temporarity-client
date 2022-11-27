@@ -25,7 +25,9 @@ const BePresentedComponent: FC<ConditionProps> = () => {
 
   return (
     <Box>
-      <Text>{t('Authorization header should be presented')}</Text>
+      <Text>
+        {t('workspace.routes.authorization.strategy.jwt.condition.be-presented.description')}
+      </Text>
     </Box>
   );
 };
@@ -35,7 +37,9 @@ const NotExpiredComponent: FC<ConditionProps> = () => {
 
   return (
     <Box>
-      <Box>{t('Authorization token should not be expired')}</Box>
+      <Box>
+        {t('workspace.routes.authorization.strategy.jwt.condition.not-expired.description')}
+      </Box>
     </Box>
   );
 };
@@ -50,7 +54,13 @@ const BeValidComponent: FC<ConditionProps<BeValidPayload>> = ({ payload, onChang
 
   return (
     <Box>
-      <Input originalLabel={t('Signature')} value={signature} onChange={setSignature} />
+      <Input
+        originalLabel={t(
+          'workspace.routes.authorization.strategy.jwt.condition.be-valid.field.signature'
+        )}
+        value={signature}
+        onChange={setSignature}
+      />
     </Box>
   );
 };
@@ -65,7 +75,13 @@ const EqualsComponent: FC<ConditionProps<EqualsPayload>> = ({ payload, onChange 
 
   return (
     <Box>
-      <Input originalLabel={t('Token')} value={value} onChange={setValue} />
+      <Input
+        originalLabel={t(
+          'workspace.routes.authorization.strategy.jwt.condition.equals.field.token'
+        )}
+        value={value}
+        onChange={setValue}
+      />
     </Box>
   );
 };
@@ -152,16 +168,16 @@ export const JwtAuthorizationStrategy: FC<Props> = ({ payload: totalData, onChan
     <Box>
       <Box>
         <FormControl>
-          <InputLabel id="select-condition">{t('Condition')}</InputLabel>
+          <InputLabel id="select-condition">{t('workspace.routes.authorization.strategy.jwt.condition.title')}</InputLabel>
           <Select
             labelId="select-condition"
-            label={t('Condition')}
+            label={t('workspace.routes.authorization.strategy.jwt.condition.title')}
             value={condition}
             onChange={(e) => handleConditionChange(e.target.value as Condition)}
           >
             {CONDITIONS.map((condition) => (
               <MenuItem key={condition} value={condition}>
-                {t(`route.strategy.jwt.condition.${condition}`)}
+                {t(`workspace.routes.authorization.strategy.jwt.condition.${condition}.title`)}
               </MenuItem>
             ))}
           </Select>

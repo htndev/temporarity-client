@@ -5,5 +5,5 @@ import { Text } from '../../../common/typography/Text';
 export const NoneAuthorizationStrategy: FC = () => {
   const { t } = useTranslation();
 
-  return <Text>{t('This request is not guarded with any authorization strategies.')}</Text>;
+  return <Text>{t('workspace.routes.authorization.strategy.none.description')}</Text>;
 };

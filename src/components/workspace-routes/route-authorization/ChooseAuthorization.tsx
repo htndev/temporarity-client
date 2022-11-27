@@ -15,16 +15,19 @@ export const ChooseAuthorization: FC<Props> = ({ value, onChange }) => {
 
   return (
     <FormControl>
-      <InputLabel id="select-auth-strategy">{t('authorization.select')}</InputLabel>
+      <InputLabel id="select-auth-strategy">
+        {t('workspace.routes.authorization.select')}
+      </InputLabel>
       <Select
         labelId="select-auth-strategy"
-        label={t('authorization.select')}
+        label={t('workspace.routes.authorization.select')}
         onChange={(e) => onChange(e.target.value as RouteAuthorizationStrategy)}
         value={value}
+        sx={{ width: 300 }}
       >
         {strategies.map((strategy) => (
           <MenuItem key={strategy} value={strategy}>
-            {t(`authorization.strategy.${strategy}`)}
+            {t(`workspace.routes.authorization.strategy.${strategy}.title`)}
           </MenuItem>
         ))}
       </Select>
