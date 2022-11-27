@@ -1,3 +1,4 @@
+import { Authorization } from './../common/types/routes.type';
 import { HttpResponse } from '../common/types/common.type';
 import { CreateRouteRequest, Route, RouteDetails } from '../common/types/routes.type';
 import { containsFile } from '../common/utils/api';
@@ -36,12 +37,19 @@ class RoutesApi extends BaseApi {
   updateRouteResponse = (
     slug: string,
     routeId: string,
-    response: RouteDetails
+    response: Pick<RouteDetails, 'response' | 'responseType'>
   ): Promise<HttpResponse> => {
     const body = this.prepareData(response);
 
     return this.instance.patch(`/${slug}/update/${routeId}/response`, body);
   };
+
+  updateRouteAuthorization = (
+    slug: string,
+    routeId: string,
+    authorization: Authorization
+  ): Promise<HttpResponse> =>
+    this.instance.patch(`/${slug}/update/${routeId}/authorization`, authorization);
 
   deleteRoute = (slug: string, routeId: string): Promise<HttpResponse> =>
     this.instance.delete(`/${slug}/${routeId}`);

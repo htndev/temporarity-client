@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { routesApi } from '../../api';
 import {
-  HttpMethod,
+  Authorization, HttpMethod,
   Route,
   RouteDetails,
   WorkspaceRouteResponseType
@@ -20,6 +20,7 @@ import { StatusInput } from '../common/StatusInput';
 import { useToast } from '../common/toastMessage';
 import { SelectResponseType } from './create-route/SelectResponseType';
 import { Response } from './response-type/Response';
+import { WorkspaceRouteAuthorization } from './route-authorization/WorkspaceRouteAuthorization';
 
 interface Props {
   route: Route;
@@ -27,7 +28,7 @@ interface Props {
   onPathUpdate: (value: string) => void | Promise<void>;
   onMethodsUpdate: (value: HttpMethod[]) => void | Promise<void>;
   onStatusUpdate: (value: number) => void | Promise<void>;
-  onResponseUpdate: (data: RouteDetails) => void | Promise<void>;
+  onResponseUpdate: (data: Pick<RouteDetails, 'response' | 'responseType'>) => void | Promise<void>;
 }
 
 export const WorkspaceRouteDetails: FC<Props> = ({
@@ -110,6 +111,16 @@ export const WorkspaceRouteDetails: FC<Props> = ({
       toast(error.response.data.message, { type: 'error' });
     }
   };
+  const handleAuthorizationChange = async (payload: Authorization) => {
+    try {
+      await routesApi.updateRouteAuthorization(slug ?? '', route.id, payload);
+      toast(t('workspace.routes.update-route.authorization.success'), { type: 'success' });
+    } catch (e: any) {
+      const errorMessage = e.response?.data?.message ?? e.message;
+
+      toast(errorMessage, { type: 'error' });
+    }
+  };
 
   return (
     <Box>
@@ -126,6 +137,12 @@ export const WorkspaceRouteDetails: FC<Props> = ({
       </Box>
       <Box sx={{ mt: 2, mb: 2 }}>
         <StatusInput value={status} onChange={onStatusChange} />
+      </Box>
+      <Box sx={{ mt: 2, mb: 2 }}>
+        <WorkspaceRouteAuthorization
+          authorization={details?.authorization}
+          onChange={handleAuthorizationChange}
+        />
       </Box>
       <Box sx={{ mt: 2, mb: 2 }}>
         <SelectResponseType defaultValue={responseType} onChange={onResponseTypeChange} />

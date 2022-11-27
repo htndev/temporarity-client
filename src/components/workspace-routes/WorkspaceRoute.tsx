@@ -130,9 +130,11 @@ export const WorkspaceRoute: FC<Props> = ({ route }) => {
     if (isExpanded && !details) {
       setIsLoading(true);
       const data = await routesApi.getRouteDetails(currentWorkspaceSlug ?? '', route.id);
-      const { response, responseType } = data;
+      const { response, responseType, authorization } = data;
 
-      dispatch(ADD_ROUTE_DETAILS({ routeId: route.id, details: { response, responseType } }));
+      dispatch(
+        ADD_ROUTE_DETAILS({ routeId: route.id, details: { response, responseType, authorization } })
+      );
       setIsLoading(false);
     }
   };
@@ -181,7 +183,9 @@ export const WorkspaceRoute: FC<Props> = ({ route }) => {
     }
   };
 
-  const updateResponse = async (responseDetails: RouteDetails) => {
+  const updateResponse = async (
+    responseDetails: Pick<RouteDetails, 'response' | 'responseType'>
+  ) => {
     await routesApi.updateRouteResponse(currentWorkspaceSlug ?? '', route.id, responseDetails);
     toast(t('workspace.routes.update-route.response', { route: route.path }), { type: 'success' });
     dispatch(FETCH_ROUTES({ slug: currentWorkspaceSlug ?? '' }));

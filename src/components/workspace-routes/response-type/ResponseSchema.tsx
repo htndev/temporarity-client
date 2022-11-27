@@ -24,7 +24,11 @@ export const ResponseSchema: FC<Props> = ({ schema, status, onChange }) => {
   const { t } = useTranslation();
   const [body, setBody] = useState(
     JSON.stringify(
-      schema && !isS3File(schema as string) ? JSON.parse(schema as string) : getSchemaTemplate(status),
+      typeof schema === 'object'
+        ? schema
+        : schema && !isS3File(schema as string)
+        ? JSON.parse(schema as string)
+        : getSchemaTemplate(status),
       null,
       2
     )
