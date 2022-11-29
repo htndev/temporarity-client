@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { routesApi } from '../../api';
 import {
-  Authorization, HttpMethod,
+  Authorization,
+  HttpMethod,
   Route,
   RouteDetails,
   WorkspaceRouteResponseType
@@ -92,7 +93,16 @@ export const WorkspaceRouteDetails: FC<Props> = ({
       return;
     }
 
-    onResponseUpdate({ responseType, response: newResponse });
+    let response = newResponse;
+
+    if (responseType === WorkspaceRouteResponseType.Schema) {
+      if (!isValidJSON(newResponse as string)) {
+        return;
+      }
+      response = JSON.parse(newResponse as string);
+    }
+
+    onResponseUpdate({ responseType, response });
   };
   const deleteRoute = async () => {
     const deletingRoute = route;
