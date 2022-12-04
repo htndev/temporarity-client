@@ -1,4 +1,13 @@
-import { Grid, Tab, Tabs, Typography } from '@mui/material';
+import {
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  Tab,
+  Tabs,
+  Typography
+} from '@mui/material';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
@@ -31,6 +40,8 @@ enum WorkspaceTab {
   Shared
 }
 
+const NONE_TEMPLATE_KEYWORD = 'none';
+
 const Workspaces: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -41,8 +52,10 @@ const Workspaces: FC = () => {
   const sharedWorkspaces = useAppSelector(sharedWorkspacesSelector);
   const isCreatingWorkspace = useAppSelector((state) => state.workspaces.isCreatingWorkspace);
   const creatingWorkspaceError = useAppSelector((state) => state.workspaces.error);
+  const templates = useAppSelector((state) => state.workspaces.templates);
   const [tab, setTab] = useState(WorkspaceTab.All);
   const [newWorkspaceName, setNewWorkspaceName] = useState('');
+  const [workspaceTemplate, setWorkspaceTemplate] = useState<string>(NONE_TEMPLATE_KEYWORD);
   const [newWorkspaceDescription, setNewWorkspaceDescription] = useState('');
   const [newSlug, setNewSlug] = useState('');
   const [isCreateWorkspacePopupOpened, setIsCreateWorkspacePopupOpened] = useState(false);
@@ -56,6 +69,13 @@ const Workspaces: FC = () => {
     [allWorkspaces, myWorkspaces, sharedWorkspaces]
   );
   const selectedWorkspacesByTab = useMemo(() => activeWorkspaces[tab], [activeWorkspaces, tab]);
+  const templateDescription = useMemo(
+    () =>
+      workspaceTemplate !== NONE_TEMPLATE_KEYWORD
+        ? templates.find((template) => template.keyword === workspaceTemplate)?.description
+        : null,
+    [templates, workspaceTemplate]
+  );
 
   const isUniqueSlugValidator = (slug: string) =>
     selectedWorkspacesByTab.find((w) => w.slug === slug) !== undefined
@@ -72,11 +92,16 @@ const Workspaces: FC = () => {
     setNewSlug(newSlug);
   };
 
+  const handleWorkspaceTemplateChange = (value: string) => {
+    setWorkspaceTemplate(value);
+  };
+
   const createNewWorkspace = (): void => {
     const requestData = {
       name: newWorkspaceName,
       slug: newSlug,
-      description: newWorkspaceDescription
+      description: newWorkspaceDescription,
+      template: workspaceTemplate === NONE_TEMPLATE_KEYWORD ? null : workspaceTemplate
     };
 
     dispatch(CREATE_WORKSPACE({ requestData, navigate }));
@@ -137,6 +162,37 @@ const Workspaces: FC = () => {
               placeholder={t('workspaces.createModal.description')}
               fullWidth
             />
+            <FormControl fullWidth sx={{ mb: 2 }}>
+              <InputLabel id="workspace-template-label">
+                {t('workspaces.createModal.template.title')}
+              </InputLabel>
+              <Select
+                fullWidth
+                value={workspaceTemplate}
+                labelId="workspace-template-label"
+                onChange={(e) => handleWorkspaceTemplateChange(e.target.value)}
+                label={t('workspaces.createModal.template.title')}
+              >
+                <MenuItem
+                  value={NONE_TEMPLATE_KEYWORD}
+                  selected={workspaceTemplate === NONE_TEMPLATE_KEYWORD}
+                >
+                  {t('workspaces.createModal.template.empty')}
+                </MenuItem>
+                {templates.map((template) => (
+                  <MenuItem
+                    key={template.keyword}
+                    value={template.keyword}
+                    selected={workspaceTemplate === template.keyword}
+                  >
+                    {template.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+              {templateDescription}
+            </Typography>
             <Button variant="contained" loading={isCreatingWorkspace} onClick={createNewWorkspace}>
               {t('workspaces.createModal.create')}
             </Button>

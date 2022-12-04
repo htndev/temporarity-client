@@ -1,3 +1,4 @@
+import { WorkspaceRoutesShortTemplate } from './../common/types/workspace.type';
 import { Workspace } from '../common/types/workspace.type';
 import { HttpResponse } from '../common/types/common.type';
 import { WorkspaceInDetails } from '../common/types/workspace.type';
@@ -11,6 +12,9 @@ class WorkspacesApi extends BaseApi {
 
   getMyWorkspaces = (): Promise<HttpResponse<{ workspaces: Workspace[] }>> =>
     this.instance.get('/');
+
+  getTemplates = (): Promise<HttpResponse<{ templates: WorkspaceRoutesShortTemplate[] }>> =>
+    this.instance.get('/templates');
 
   createWorkspace = (
     payload: ReturnType<typeof CREATE_WORKSPACE>['payload']['requestData']

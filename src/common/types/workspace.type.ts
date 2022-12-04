@@ -16,3 +16,9 @@ export interface Workspace {
 export interface WorkspaceInDetails extends Workspace {
   apiKey: string;
 }
+
+export interface WorkspaceRoutesShortTemplate {
+  name: string;
+  keyword: string;
+  description: string;
+}

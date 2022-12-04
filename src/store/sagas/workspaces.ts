@@ -1,5 +1,6 @@
+import { SET_WORKSPACE_TEMPLATES } from './../actions/workspaces';
 import { AxiosError } from 'axios';
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 import { workspacesApi } from '../../api/workspaces.api';
 import { HttpResponse } from '../../common/types/common.type';
 import {
@@ -16,9 +17,13 @@ import {
 function* fetchWorkspaces(): Generator {
   try {
     yield put(FETCH_WORKSPACES_STARTED());
-    const response: any = yield call(workspacesApi.getMyWorkspaces);
+    const [workspacesResponse, templateResponse]: any = yield all([
+      call(workspacesApi.getMyWorkspaces),
+      call(workspacesApi.getTemplates)
+    ]);
 
-    yield put(FETCH_WORKSPACES_COMPLETED(response));
+    yield put(FETCH_WORKSPACES_COMPLETED(workspacesResponse));
+    yield put(SET_WORKSPACE_TEMPLATES(templateResponse.templates));
   } catch (e: any) {
     const error: AxiosError<HttpResponse> = e;
     yield put(FETCH_WORKSPACES_FAILED(error.response?.data.message ?? ''));

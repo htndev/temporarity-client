@@ -1,18 +1,20 @@
-import { setInitialValues } from '../../common/utils/map-initial-state';
 import { createReducer } from '@reduxjs/toolkit';
 import { Workspace } from '../../common/types/workspace.type';
-import { FETCH_WORKSPACES_STARTED } from '../actions/workspaces';
+import { setInitialValues } from '../../common/utils/map-initial-state';
 import {
   CLEAR_WORKSPACES,
   CREATE_WORKSPACE_COMPLETED,
   CREATE_WORKSPACE_FAILED,
   CREATE_WORKSPACE_STARTED,
   FETCH_WORKSPACES_COMPLETED,
-  FETCH_WORKSPACES_FAILED
+  FETCH_WORKSPACES_FAILED, FETCH_WORKSPACES_STARTED
 } from '../actions/workspaces';
+import { WorkspaceRoutesShortTemplate } from './../../common/types/workspace.type';
+import { SET_WORKSPACE_TEMPLATES } from './../actions/workspaces';
 
 interface WorkspacesReducer {
   workspaces: Workspace[];
+  templates: WorkspaceRoutesShortTemplate[];
   isFetching: boolean;
   isWorkspacesFetched: boolean;
   isCreatingWorkspace: boolean;
@@ -21,6 +23,7 @@ interface WorkspacesReducer {
 
 const initialState: WorkspacesReducer = {
   workspaces: [],
+  templates: [],
   isFetching: false,
   isCreatingWorkspace: false,
   isWorkspacesFetched: false,
@@ -52,6 +55,9 @@ export const workspacesReducer = createReducer<WorkspacesReducer>(initialState, 
     .addCase(CREATE_WORKSPACE_FAILED, (state, { payload }) => {
       state.isCreatingWorkspace = false;
       state.error = payload;
+    })
+    .addCase(SET_WORKSPACE_TEMPLATES, (state, { payload }) => {
+      state.templates = payload;
     })
     .addCase(CLEAR_WORKSPACES, (state) => {
       setInitialValues(state, initialState);
