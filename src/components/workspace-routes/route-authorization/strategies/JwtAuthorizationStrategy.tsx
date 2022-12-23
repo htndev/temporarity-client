@@ -12,6 +12,7 @@ import { Text } from '../../../common/typography/Text';
 
 interface Props {
   payload: JwtStrategyConfig | null;
+  originalPayload: JwtStrategyConfig | null;
   onChange: (payload: object | null) => void;
 }
 
@@ -118,61 +119,47 @@ const CONDITION_DEFAULT_PAYLOAD = {
   }
 };
 
-export const JwtAuthorizationStrategy: FC<Props> = ({ payload: totalData, onChange }) => {
+export const JwtAuthorizationStrategy: FC<Props> = ({ payload, originalPayload, onChange }) => {
   const { t } = useTranslation();
-  const [condition, setCondition] = useState(totalData?.condition || Condition.BePresented);
-  const [payload, setPayload] = useState<object | null>(
-    totalData?.payload || CONDITION_DEFAULT_PAYLOAD[condition]
+  const ConditionComponent = useMemo(
+    () => CONDITION_COMPONENTS[payload!.condition],
+    [payload?.condition]
   );
-  const ConditionComponent = useMemo(() => CONDITION_COMPONENTS[condition], [condition]);
 
   const handleConditionChange = (newCondition: Condition) => {
-    if (newCondition === condition) {
+    if (newCondition === payload?.condition) {
       return;
     }
 
-    if (newCondition === totalData?.condition) {
-      setPayload(totalData.payload);
+    if (newCondition === originalPayload?.condition) {
+      onChange(originalPayload);
+      return;
     }
 
-    if (newCondition !== condition) {
-      setPayload(CONDITION_DEFAULT_PAYLOAD[newCondition]);
+    if (newCondition !== payload?.condition) {
+      onChange(CONDITION_DEFAULT_PAYLOAD[newCondition]);
     }
-
-    setCondition(newCondition);
   };
 
   useEffect(() => {
-    if (totalData) {
+    if (payload) {
       return;
     }
 
-    onChange(CONDITION_DEFAULT_PAYLOAD[condition]);
+    onChange(CONDITION_DEFAULT_PAYLOAD[payload!.condition]);
   }, []);
-
-  useEffect(
-    () =>
-      setPayload(
-        totalData?.condition === condition
-          ? totalData.payload
-          : CONDITION_DEFAULT_PAYLOAD[condition]
-      ),
-    [condition]
-  );
-
-  useEffect(() => setPayload(totalData || CONDITION_DEFAULT_PAYLOAD[condition]), [totalData]);
-
-  useEffect(() => onChange(payload), [payload]);
 
   return (
     <Box>
       <Box>
         <FormControl>
-          <InputLabel id="select-condition">{t('workspace.routes.authorization.strategy.jwt.condition.title')}</InputLabel>
+          <InputLabel id="select-condition">
+            {t('workspace.routes.authorization.strategy.jwt.condition.title')}
+          </InputLabel>
           <Select
             labelId="select-condition"
             label={t('workspace.routes.authorization.strategy.jwt.condition.title')}
-            value={condition}
+            value={payload?.condition}
             onChange={(e) => handleConditionChange(e.target.value as Condition)}
           >
             {CONDITIONS.map((condition) => (
@@ -184,7 +171,7 @@ export const JwtAuthorizationStrategy: FC<Props> = ({ payload: totalData, onChan
         </FormControl>
       </Box>
       <Box sx={{ pt: 2 }}>
-        <ConditionComponent payload={(payload as any).payload} onChange={setPayload} />
+        <ConditionComponent payload={payload?.payload} onChange={onChange} />
       </Box>
     </Box>
   );

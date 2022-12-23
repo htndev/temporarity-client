@@ -9,9 +9,10 @@ export const isValidJSON = (json: string) => {
 
 export const buildPathUrl = (path: string) => {
   const url = new URL(path, window.location.origin);
-  const baseUrl = url.pathname.endsWith('/')
+  let baseUrl = url.pathname.endsWith('/')
     ? url.pathname.slice(0, url.pathname.length - 1)
     : url.pathname;
+  baseUrl = baseUrl.startsWith('/') ? baseUrl : `/${baseUrl}`;
 
   return baseUrl;
 };

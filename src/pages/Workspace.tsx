@@ -65,7 +65,6 @@ const Workspace: FC = () => {
     }
   }, [currentWorkspaceError]);
 
-  // TODO: Split into tabs: members and routes
   return (
     <Layout>
       <WorkspaceHeader />

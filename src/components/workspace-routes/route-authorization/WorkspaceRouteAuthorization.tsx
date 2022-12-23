@@ -29,6 +29,7 @@ export const WorkspaceRouteAuthorization: FC<Props> = ({ authorization, onChange
   const [strategy, setStrategy] = useState(
     authorization?.strategy || RouteAuthorizationStrategy.NONE
   );
+  const originalPayload = useMemo(() => authorization?.payload, [authorization]);
   const [payload, setPayload] = useState<AuthorizationPayload>(
     authorization?.payload as AuthorizationPayload
   );
@@ -52,7 +53,11 @@ export const WorkspaceRouteAuthorization: FC<Props> = ({ authorization, onChange
         <ChooseAuthorization value={strategy} onChange={handleStrategyChange} />
       </Box>
       <Box sx={{ mb: 2 }}>
-        <StrategyComponent payload={payload as any} onChange={setPayload as any} />
+        <StrategyComponent
+          payload={payload as any}
+          originalPayload={originalPayload as any}
+          onChange={setPayload as any}
+        />
       </Box>
       <Box>
         <Button onClick={updateAuthorization}>{t('common.update')}</Button>

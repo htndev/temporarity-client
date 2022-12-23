@@ -14,7 +14,10 @@ You are allowed to specify a few methods for incoming request.
 
 ## Authorization
 
-There will be described authorization.
+Temporarity supports next authorization strategies:
+
+- API KEY
+- JWT
 
 ## Route response placeholders
 
